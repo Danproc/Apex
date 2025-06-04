@@ -1,0 +1,668 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Apex27 WordPress Plugin\n"
+"POT-Creation-Date: 2021-12-07 09:55+0000\n"
+"PO-Revision-Date: 2021-12-07 09:55+0000\n"
+"Last-Translator: Alan Lam <alan@apex27.co.uk>\n"
+"Language-Team: \n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: includes\n"
+"X-Poedit-SearchPath-2: templates\n"
+
+#: apex27.php:101 apex27.php:230 includes/search_form.php:179
+msgid "Property Search"
+msgstr "Búsqueda de Propiedades"
+
+#: apex27.php:105 templates/property-search.php:217
+msgid "Property Details"
+msgstr "Detalles de la propiedad"
+
+#: apex27.php:193
+msgid "Welcome"
+msgstr "Bienvenido"
+
+#: apex27.php:194
+msgid "Thanks for installing the Apex27 WordPress plugin!"
+msgstr "¡Gracias por instalar el complemento Apex27 WordPress!"
+
+#: apex27.php:196
+msgid "Please configure the following options to activate the integration."
+msgstr "Configure las siguientes opciones para activar la integración."
+
+#: apex27.php:198
+msgid ""
+"You can find these settings under the WordPress tab in your website's Edit "
+"page on Apex27."
+msgstr ""
+"Puede encontrar estas configuraciones en la pestaña de WordPress en la "
+"página de edición de su sitio web en Apex27."
+
+#: apex27.php:225 apex27.php:250
+msgid "Status"
+msgstr "Estado"
+
+#: apex27.php:225
+msgid "Connected"
+msgstr "Conectado"
+
+#: apex27.php:227
+msgid "URLs"
+msgstr "URLs"
+
+#: apex27.php:235
+msgid "Please Note"
+msgstr "Tenga en cuenta"
+
+#: apex27.php:239
+#, php-format
+msgid ""
+"This plugin will replace any page with a URL slug that matches %s with the "
+"property search page."
+msgstr ""
+"Este complemento reemplazará cualquier página con un slug de URL que "
+"coincida con %s con la página de búsqueda de propiedad."
+
+#: apex27.php:250
+msgid "Not Connected"
+msgstr "No conectado"
+
+#: apex27.php:270
+msgid "Main"
+msgstr "Principal"
+
+#: apex27.php:287
+msgid "Website URL"
+msgstr "URL del sitio web"
+
+#: apex27.php:298
+msgid "API Key"
+msgstr "Clave API"
+
+#: apex27.php:309
+msgid "Expand Price Range to £50M"
+msgstr "Amplíe el rango de precios a 50 millones"
+
+#: apex27.php:319
+msgid "Show Overseas Dropdown"
+msgstr "Mostrar menú desplegable en el extranjero"
+
+#: includes/footer.php:7
+msgid "Powered by"
+msgstr "Desarrollado por"
+
+#: includes/search_form.php:12
+msgid "Failed to fetch website options."
+msgstr "No se pudieron recuperar las opciones del sitio web."
+
+#: includes/search_form.php:25
+msgid "Failed to fetch search options."
+msgstr ""
+
+#: includes/search_form.php:66
+msgid "UK"
+msgstr "Reino Unido"
+
+#: includes/search_form.php:67 includes/search_form.php:191
+msgid "Overseas"
+msgstr "Exterior"
+
+#: includes/search_form.php:71
+msgid "Exclude Sold/Let"
+msgstr "Excluir vendido/alquilado"
+
+#: includes/search_form.php:72
+msgid "Include Sold/Let"
+msgstr "Incluir vendido/alquilado"
+
+#: includes/search_form.php:138
+#, php-format
+msgid "At least %d beds"
+msgstr "Mínimo %d camas"
+
+#: includes/search_form.php:146
+#, php-format
+msgid "At most %d beds"
+msgstr "Como máximo %d camas"
+
+#: includes/search_form.php:186
+msgid "Type"
+msgstr "Categoría"
+
+#: includes/search_form.php:188
+msgid "Property Type"
+msgstr ""
+
+#: includes/search_form.php:194
+msgid "Min. Price"
+msgstr "Precio mínimo"
+
+#: includes/search_form.php:195
+msgid "Max. Price"
+msgstr "Precio maximo"
+
+#: includes/search_form.php:196
+msgid "City"
+msgstr "Ciudad"
+
+#: includes/search_form.php:196
+msgid "Location"
+msgstr "Localización"
+
+#: includes/search_form.php:197
+msgid "Min. Bedrooms"
+msgstr "Dormitorios mínimos"
+
+#: includes/search_form.php:198
+msgid "Max. Bedrooms"
+msgstr "Dormitorios maximo"
+
+#: includes/search_form.php:200 templates/property-details.php:342
+#: templates/property-search.php:200
+msgid "Gross Yield"
+msgstr "Rendimiento bruto"
+
+#: includes/search_form.php:202
+msgid "Include SSTC"
+msgstr "Incluir SSTC"
+
+#: includes/search_form.php:203
+msgid "Sort"
+msgstr "Clasificar"
+
+#: includes/search_form.php:207
+msgid "Update"
+msgstr "Actualizar"
+
+#: includes/strings.php:3
+msgid "Sales"
+msgstr ""
+
+#: includes/strings.php:4
+msgid "Lettings"
+msgstr ""
+
+#: includes/strings.php:5
+msgid "New Homes"
+msgstr ""
+
+#: includes/strings.php:6 includes/strings.php:38
+msgid "Land"
+msgstr ""
+
+#: includes/strings.php:7
+msgid "Auctions"
+msgstr ""
+
+#: includes/strings.php:8
+msgid "Commercial Sales"
+msgstr ""
+
+#: includes/strings.php:9
+msgid "Commercial Lettings"
+msgstr ""
+
+#: includes/strings.php:12
+msgid "Bungalow"
+msgstr ""
+
+#: includes/strings.php:13
+msgid "Cottage"
+msgstr ""
+
+#: includes/strings.php:14
+msgid "Detached House"
+msgstr ""
+
+#: includes/strings.php:15
+msgid "Detached Bungalow"
+msgstr ""
+
+#: includes/strings.php:16
+msgid "End Terraced House"
+msgstr ""
+
+#: includes/strings.php:17
+msgid "End Terraced Bungalow"
+msgstr ""
+
+#: includes/strings.php:18
+msgid "Apartment / Flat"
+msgstr ""
+
+#: includes/strings.php:19
+msgid "Link Detached House"
+msgstr ""
+
+#: includes/strings.php:20
+msgid "Link Detached Bungalow"
+msgstr ""
+
+#: includes/strings.php:21
+msgid "Semi-detached House"
+msgstr ""
+
+#: includes/strings.php:22
+msgid "Semi-detached Bungalow"
+msgstr ""
+
+#: includes/strings.php:23
+msgid "Studio"
+msgstr ""
+
+#: includes/strings.php:24
+msgid "Terraced House"
+msgstr ""
+
+#: includes/strings.php:25
+msgid "Terraced Bungalow"
+msgstr ""
+
+#: includes/strings.php:26
+msgid "Town House"
+msgstr ""
+
+#: includes/strings.php:27
+msgid "House"
+msgstr ""
+
+#: includes/strings.php:30
+msgid "Barn Conversion"
+msgstr ""
+
+#: includes/strings.php:31
+msgid "Beach Hut"
+msgstr ""
+
+#: includes/strings.php:32
+msgid "Block of Flats"
+msgstr ""
+
+#: includes/strings.php:33
+msgid "Country House"
+msgstr ""
+
+#: includes/strings.php:34
+msgid "Equestrian"
+msgstr ""
+
+#: includes/strings.php:35
+msgid "Farm"
+msgstr ""
+
+#: includes/strings.php:36
+msgid "Farmhouse"
+msgstr ""
+
+#: includes/strings.php:37
+msgid "Houseboat"
+msgstr ""
+
+#: includes/strings.php:39
+msgid "Lodge"
+msgstr ""
+
+#: includes/strings.php:40
+msgid "Maisonette"
+msgstr ""
+
+#: includes/strings.php:41
+msgid "Mews"
+msgstr ""
+
+#: includes/strings.php:42
+msgid "Park Home"
+msgstr ""
+
+#: includes/strings.php:43
+msgid "Parking"
+msgstr ""
+
+#: includes/strings.php:46
+msgid "Bar"
+msgstr ""
+
+#: includes/strings.php:47
+msgid "Business Park"
+msgstr ""
+
+#: includes/strings.php:48
+msgid "Hotel"
+msgstr ""
+
+#: includes/strings.php:49
+msgid "Industrial"
+msgstr ""
+
+#: includes/strings.php:50
+msgid "Leisure"
+msgstr ""
+
+#: includes/strings.php:51
+msgid "Light Industrial"
+msgstr ""
+
+#: includes/strings.php:52
+msgid "Nightclub"
+msgstr ""
+
+#: includes/strings.php:53
+msgid "Office"
+msgstr ""
+
+#: includes/strings.php:54
+msgid "Pub"
+msgstr ""
+
+#: includes/strings.php:55
+msgid "Restaurant"
+msgstr ""
+
+#: includes/strings.php:56
+msgid "Retail"
+msgstr ""
+
+#: includes/strings.php:57
+msgid "Storage"
+msgstr ""
+
+#: includes/strings.php:58
+msgid "Warehouse"
+msgstr ""
+
+#: includes/strings.php:61
+msgid "Chalet"
+msgstr ""
+
+#: includes/strings.php:62
+msgid "Château"
+msgstr ""
+
+#: includes/strings.php:63
+msgid "Finca"
+msgstr ""
+
+#: includes/strings.php:64
+msgid "Longere"
+msgstr ""
+
+#: includes/strings.php:65
+msgid "Riad"
+msgstr ""
+
+#: includes/strings.php:66
+msgid "Villa"
+msgstr ""
+
+#: includes/strings.php:69
+msgid "House of Multiple Occupation"
+msgstr ""
+
+#: includes/strings.php:70
+msgid "Portfolio"
+msgstr ""
+
+#: includes/strings.php:72
+msgid "Featured first"
+msgstr ""
+
+#: includes/strings.php:73
+msgid "Highest price first"
+msgstr ""
+
+#: includes/strings.php:74
+msgid "Lowest price first"
+msgstr ""
+
+#: includes/strings.php:75
+msgid "Newest first"
+msgstr ""
+
+#: includes/strings.php:76
+msgid "Oldest first"
+msgstr ""
+
+#: includes/strings.php:77
+msgid "Nearest first"
+msgstr ""
+
+#: includes/strings.php:79 templates/property-search.php:43
+msgid "No properties"
+msgstr ""
+
+#: includes/strings.php:80
+#, php-format
+msgid "Showing %d property"
+msgstr ""
+
+#: includes/strings.php:81
+#, php-format
+msgid "Showing %d properties"
+msgstr ""
+
+#: includes/strings.php:82 templates/property-search.php:57
+#, php-format
+msgid "Showing %d-%d of %d properties"
+msgstr ""
+
+#: templates/property-details.php:23 templates/property-search.php:21
+msgid "Error"
+msgstr "Error"
+
+#: templates/property-details.php:24
+msgid "Cannot retrieve property details at this time. Please try again later."
+msgstr ""
+"No se pueden recuperar los detalles de la propiedad en este momento. Por "
+"favor, inténtelo de nuevo más tarde."
+
+#: templates/property-details.php:206 templates/property-details.php:412
+msgid "Floorplans"
+msgstr "Planos de planta"
+
+#: templates/property-details.php:214
+msgid "EPC"
+msgstr "EPC"
+
+#: templates/property-details.php:224 templates/property-details.php:420
+msgid "Brochures"
+msgstr "Folletos"
+
+#: templates/property-details.php:232
+msgid "Brochure"
+msgstr "Folletos"
+
+#: templates/property-details.php:243 templates/property-details.php:424
+msgid "Videos"
+msgstr "Videos"
+
+#: templates/property-details.php:251
+msgid "Video"
+msgstr "Video"
+
+#: templates/property-details.php:262 templates/property-details.php:429
+msgid "Virtual Tours"
+msgstr "Visitas virtuales"
+
+#: templates/property-details.php:270
+msgid "Virtual Tour"
+msgstr "Visita virtual"
+
+#: templates/property-details.php:280 templates/property-details.php:449
+msgid "Map"
+msgstr "Mapa"
+
+#: templates/property-details.php:287 templates/property-details.php:456
+msgid "Street View"
+msgstr "Street View"
+
+#: templates/property-details.php:296 templates/property-search.php:221
+msgid "Make Enquiry"
+msgstr "Hacer consulta"
+
+#: templates/property-details.php:303
+msgid "Back to Search Results"
+msgstr "Regresar a los resultados de búsqueda"
+
+#: templates/property-details.php:311
+msgid "Description"
+msgstr "Descripción"
+
+#: templates/property-details.php:335
+msgid "No description is available for this property."
+msgstr "No hay descripción disponible para esta propiedad."
+
+#: templates/property-details.php:350 templates/property-search.php:208
+msgid "Buyer Fee"
+msgstr "Tarifa del comprador"
+
+#: templates/property-details.php:382
+msgid "Reference"
+msgstr "Referencia"
+
+#: templates/property-details.php:398
+msgid "Additional Details"
+msgstr "Detalles adicionales"
+
+#: templates/property-details.php:416
+msgid "EPCs"
+msgstr "EPCs"
+
+#: templates/property-details.php:436
+msgid "View Virtual Tour"
+msgstr "Ver visita virtual"
+
+#: templates/property-details.php:471
+msgid "Features"
+msgstr "Características"
+
+#: templates/property-details.php:490
+msgid "To make an enquiry for this property, please complete the form below."
+msgstr ""
+"Para realizar una consulta sobre esta propiedad, por favor complete el "
+"siguiente formulario."
+
+#: templates/property-details.php:494
+#, php-format
+msgid ""
+"To make an enquiry for this property, please call us on <strong>%s</strong>, "
+"or complete the form below."
+msgstr ""
+"Para realizar una consulta sobre esta propiedad, llámenos al %s o complete "
+"el formulario a continuación."
+
+#: templates/property-details.php:501
+msgid "Enquiry"
+msgstr "Consulta"
+
+#: templates/property-details.php:512
+msgid "First Name"
+msgstr "Nombre"
+
+#: templates/property-details.php:513
+msgid "Enter first name"
+msgstr "Ingrese el nombre"
+
+#: templates/property-details.php:517
+msgid "Last Name"
+msgstr "Apellido"
+
+#: templates/property-details.php:518
+msgid "Enter last name"
+msgstr "Ingrese el apellido"
+
+#: templates/property-details.php:522
+msgid "Email"
+msgstr "Email"
+
+#: templates/property-details.php:523
+msgid "Enter email"
+msgstr "Ingrese correo electrónico"
+
+#: templates/property-details.php:527
+msgid "Phone"
+msgstr "Teléfono"
+
+#: templates/property-details.php:528
+msgid "Enter phone"
+msgstr "Ingrese el número de teléfono"
+
+#: templates/property-details.php:532
+msgid "Message"
+msgstr "Mensaje"
+
+#: templates/property-details.php:533
+msgid "Enter message"
+msgstr "Mensaje de entrada"
+
+#: templates/property-details.php:538
+msgid "I want more details about this property"
+msgstr "Quiero más detalles sobre esta propiedad."
+
+#: templates/property-details.php:542
+msgid "I want to view this property"
+msgstr "Quiero ver esta propiedad"
+
+#: templates/property-details.php:546
+msgid "I want a valuation"
+msgstr "Quiero una valuacion"
+
+#: templates/property-details.php:551
+msgid "Submit"
+msgstr "Enviar"
+
+#: templates/property-search.php:22
+msgid "Cannot retreive properties at this time. Please try again later."
+msgstr ""
+
+#: templates/property-search.php:69
+msgid "Properties"
+msgstr "Propiedades"
+
+#: templates/property-search.php:87
+msgid "Toggle Map"
+msgstr ""
+
+#: templates/property-search.php:99
+msgid "No properties to display."
+msgstr "No hay propiedades para mostrar."
+
+#: templates/property-search.php:152
+msgid "Bedrooms"
+msgstr "Dormitorios"
+
+#: templates/property-search.php:153
+msgid "Bathrooms"
+msgstr "Cuartos de baño"
+
+#: templates/property-search.php:154
+msgid "Living Rooms"
+msgstr "Salas"
+
+#: templates/property-search.php:162
+msgid "Featured Property"
+msgstr "Propiedad Destacada"
+
+#: templates/property-search.php:192
+msgid "Gross Income"
+msgstr "Ingresos brutos"
+
+#: templates/property-search.php:241
+msgid "Previous Page"
+msgstr ""
+
+#: templates/property-search.php:249
+#, php-format
+msgid "Page %d of %d"
+msgstr ""
+
+#: templates/property-search.php:258
+msgid "Next Page"
+msgstr ""

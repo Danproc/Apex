@@ -1,0 +1,668 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Apex27 WordPress Plugin\n"
+"POT-Creation-Date: 2021-12-07 09:55+0000\n"
+"PO-Revision-Date: 2021-12-07 09:55+0000\n"
+"Last-Translator: Alan Lam <alan@apex27.co.uk>\n"
+"Language-Team: \n"
+"Language: zh_HK\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_n\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: includes\n"
+"X-Poedit-SearchPath-2: templates\n"
+
+#: apex27.php:101 apex27.php:230 includes/search_form.php:179
+msgid "Property Search"
+msgstr "物業搜索"
+
+#: apex27.php:105 templates/property-search.php:217
+msgid "Property Details"
+msgstr "物業詳情"
+
+#: apex27.php:193
+msgid "Welcome"
+msgstr "歡迎"
+
+#: apex27.php:194
+msgid "Thanks for installing the Apex27 WordPress plugin!"
+msgstr "感謝您安裝 Apex27 WordPress plugin!"
+
+#: apex27.php:196
+msgid "Please configure the following options to activate the integration."
+msgstr "請配置以下選項以激活集成。"
+
+#: apex27.php:198
+msgid ""
+"You can find these settings under the WordPress tab in your website's Edit "
+"page on Apex27."
+msgstr "您可以在 Apex27 網站編輯頁面的 WordPress 選項卡下找到這些設置。"
+
+#: apex27.php:225 apex27.php:250
+msgid "Status"
+msgstr "狀態"
+
+#: apex27.php:225
+msgid "Connected"
+msgstr "連接的"
+
+#: apex27.php:227
+msgid "URLs"
+msgstr "網址"
+
+#: apex27.php:235
+msgid "Please Note"
+msgstr "請注意"
+
+#: apex27.php:239
+#, php-format
+msgid ""
+"This plugin will replace any page with a URL slug that matches %s with the "
+"property search page."
+msgstr "此插件將使用與 %s 與屬性搜索頁面匹配的網址替換任何頁面。"
+
+#: apex27.php:250
+msgid "Not Connected"
+msgstr "未連接"
+
+#: apex27.php:270
+msgid "Main"
+msgstr "主要的"
+
+#: apex27.php:287
+msgid "Website URL"
+msgstr "網址"
+
+#: apex27.php:298
+msgid "API Key"
+msgstr "API 密鑰"
+
+#: apex27.php:309
+msgid "Expand Price Range to £50M"
+msgstr "將價格範圍擴大至 5000 萬英鎊"
+
+#: apex27.php:319
+msgid "Show Overseas Dropdown"
+msgstr "顯示海外跌幅"
+
+#: includes/footer.php:7
+msgid "Powered by"
+msgstr "提供支持 "
+
+#: includes/search_form.php:12
+msgid "Failed to fetch website options."
+msgstr "無法獲取網站選項。"
+
+#: includes/search_form.php:25
+msgid "Failed to fetch search options."
+msgstr "無法獲取搜索選項。"
+
+#: includes/search_form.php:66
+msgid "UK"
+msgstr "英國"
+
+#: includes/search_form.php:67 includes/search_form.php:191
+msgid "Overseas"
+msgstr "海外"
+
+#: includes/search_form.php:71
+msgid "Exclude Sold/Let"
+msgstr "不包括出售/出租"
+
+#: includes/search_form.php:72
+msgid "Include Sold/Let"
+msgstr "包括出售/出租"
+
+#: includes/search_form.php:138
+#, php-format
+msgid "At least %d beds"
+msgstr "至少 %d 間睡房"
+
+#: includes/search_form.php:146
+#, php-format
+msgid "At most %d beds"
+msgstr "最多 %d 間睡房"
+
+#: includes/search_form.php:186
+msgid "Type"
+msgstr "類型"
+
+#: includes/search_form.php:188
+msgid "Property Type"
+msgstr "物業種類"
+
+#: includes/search_form.php:194
+msgid "Min. Price"
+msgstr "最低價錢"
+
+#: includes/search_form.php:195
+msgid "Max. Price"
+msgstr "最高價錢"
+
+#: includes/search_form.php:196
+msgid "City"
+msgstr "城市"
+
+#: includes/search_form.php:196
+msgid "Location"
+msgstr "地點"
+
+#: includes/search_form.php:197
+msgid "Min. Bedrooms"
+msgstr "最少房間"
+
+#: includes/search_form.php:198
+msgid "Max. Bedrooms"
+msgstr "最多房間"
+
+#: includes/search_form.php:200 templates/property-details.php:342
+#: templates/property-search.php:200
+msgid "Gross Yield"
+msgstr "總收益"
+
+#: includes/search_form.php:202
+msgid "Include SSTC"
+msgstr "包括銷售以合約為準"
+
+#: includes/search_form.php:203
+msgid "Sort"
+msgstr "排序"
+
+#: includes/search_form.php:207
+msgid "Update"
+msgstr "更新"
+
+#: includes/strings.php:3
+msgid "Sales"
+msgstr "出售"
+
+#: includes/strings.php:4
+msgid "Lettings"
+msgstr "出租"
+
+#: includes/strings.php:5
+msgid "New Homes"
+msgstr "新房"
+
+#: includes/strings.php:6 includes/strings.php:38
+msgid "Land"
+msgstr "土地"
+
+#: includes/strings.php:7
+msgid "Auctions"
+msgstr "拍賣"
+
+#: includes/strings.php:8
+msgid "Commercial Sales"
+msgstr "商業出售"
+
+#: includes/strings.php:9
+msgid "Commercial Lettings"
+msgstr "商業出租"
+
+#: includes/strings.php:12
+msgid "Bungalow"
+msgstr "平房"
+
+#: includes/strings.php:13
+msgid "Cottage"
+msgstr "小屋"
+
+#: includes/strings.php:14
+msgid "Detached House"
+msgstr "獨立屋"
+
+#: includes/strings.php:15
+msgid "Detached Bungalow"
+msgstr "獨立平房"
+
+#: includes/strings.php:16
+msgid "End Terraced House"
+msgstr "末端排屋"
+
+#: includes/strings.php:17
+msgid "End Terraced Bungalow"
+msgstr "末端露台平房"
+
+#: includes/strings.php:18
+msgid "Apartment / Flat"
+msgstr "公寓"
+
+#: includes/strings.php:19
+msgid "Link Detached House"
+msgstr "連接獨立式屋"
+
+#: includes/strings.php:20
+msgid "Link Detached Bungalow"
+msgstr "連接獨立式平房"
+
+#: includes/strings.php:21
+msgid "Semi-detached House"
+msgstr "半獨立屋"
+
+#: includes/strings.php:22
+msgid "Semi-detached Bungalow"
+msgstr "半獨立平房"
+
+#: includes/strings.php:23
+msgid "Studio"
+msgstr "一室公寓"
+
+#: includes/strings.php:24
+msgid "Terraced House"
+msgstr "排屋"
+
+#: includes/strings.php:25
+msgid "Terraced Bungalow"
+msgstr "排平房"
+
+#: includes/strings.php:26
+msgid "Town House"
+msgstr "聯排別墅"
+
+#: includes/strings.php:27
+msgid "House"
+msgstr "屋"
+
+#: includes/strings.php:30
+msgid "Barn Conversion"
+msgstr "穀倉轉換"
+
+#: includes/strings.php:31
+msgid "Beach Hut"
+msgstr "海灘小屋"
+
+#: includes/strings.php:32
+msgid "Block of Flats"
+msgstr "公寓樓"
+
+#: includes/strings.php:33
+msgid "Country House"
+msgstr "鄉間別墅"
+
+#: includes/strings.php:34
+msgid "Equestrian"
+msgstr "馬術"
+
+#: includes/strings.php:35
+msgid "Farm"
+msgstr "農場"
+
+#: includes/strings.php:36
+msgid "Farmhouse"
+msgstr "農家"
+
+#: includes/strings.php:37
+msgid "Houseboat"
+msgstr "船屋"
+
+#: includes/strings.php:39
+msgid "Lodge"
+msgstr "小屋"
+
+#: includes/strings.php:40
+msgid "Maisonette"
+msgstr "小別墅"
+
+#: includes/strings.php:41
+msgid "Mews"
+msgstr "馬房"
+
+#: includes/strings.php:42
+msgid "Park Home"
+msgstr "公園別墅"
+
+#: includes/strings.php:43
+msgid "Parking"
+msgstr "停車處"
+
+#: includes/strings.php:46
+msgid "Bar"
+msgstr "酒吧"
+
+#: includes/strings.php:47
+msgid "Business Park"
+msgstr "商業園"
+
+#: includes/strings.php:48
+msgid "Hotel"
+msgstr "酒店"
+
+#: includes/strings.php:49
+msgid "Industrial"
+msgstr "工業的"
+
+#: includes/strings.php:50
+msgid "Leisure"
+msgstr "休閒"
+
+#: includes/strings.php:51
+msgid "Light Industrial"
+msgstr "輕工業"
+
+#: includes/strings.php:52
+msgid "Nightclub"
+msgstr "夜店"
+
+#: includes/strings.php:53
+msgid "Office"
+msgstr "辦公室"
+
+#: includes/strings.php:54
+msgid "Pub"
+msgstr "酒館"
+
+#: includes/strings.php:55
+msgid "Restaurant"
+msgstr "餐廳"
+
+#: includes/strings.php:56
+msgid "Retail"
+msgstr "零售"
+
+#: includes/strings.php:57
+msgid "Storage"
+msgstr "儲存"
+
+#: includes/strings.php:58
+msgid "Warehouse"
+msgstr "倉庫"
+
+#: includes/strings.php:61
+msgid "Chalet"
+msgstr "木屋"
+
+#: includes/strings.php:62
+msgid "Château"
+msgstr "城堡"
+
+#: includes/strings.php:63
+msgid "Finca"
+msgstr "芬卡"
+
+#: includes/strings.php:64
+msgid "Longere"
+msgstr "朗格"
+
+#: includes/strings.php:65
+msgid "Riad"
+msgstr "里亞德"
+
+#: includes/strings.php:66
+msgid "Villa"
+msgstr "別墅"
+
+#: includes/strings.php:69
+msgid "House of Multiple Occupation"
+msgstr "多用途住宅"
+
+#: includes/strings.php:70
+msgid "Portfolio"
+msgstr "物業組合"
+
+#: includes/strings.php:72
+msgid "Featured first"
+msgstr "特色物業優先"
+
+#: includes/strings.php:73
+msgid "Highest price first"
+msgstr "最高價優先"
+
+#: includes/strings.php:74
+msgid "Lowest price first"
+msgstr "最低價優先"
+
+#: includes/strings.php:75
+msgid "Newest first"
+msgstr "新的優先"
+
+#: includes/strings.php:76
+msgid "Oldest first"
+msgstr "最老的優先"
+
+#: includes/strings.php:77
+msgid "Nearest first"
+msgstr "最近優先"
+
+#: includes/strings.php:79 templates/property-search.php:43
+msgid "No properties"
+msgstr "沒有物業"
+
+#: includes/strings.php:80 templates/property-search.php:46
+#, php-format
+msgid "Showing %d property"
+msgstr "顯示 %d 物業"
+
+#: includes/strings.php:81
+#, php-format
+msgid "Showing %d properties"
+msgstr "顯示 %d 物業"
+
+#: includes/strings.php:82 templates/property-search.php:57
+#, php-format
+msgid "Showing %d-%d of %d properties"
+msgstr "顯示 %3$d 個物業中的 %1$d-%2$d 個"
+
+#: templates/property-details.php:23 templates/property-search.php:21
+msgid "Error"
+msgstr "錯誤"
+
+#: templates/property-details.php:24
+msgid "Cannot retrieve property details at this time. Please try again later."
+msgstr "目前無法檢索物業詳細資料。請稍後再試。"
+
+#: templates/property-details.php:206 templates/property-details.php:412
+msgid "Floorplans"
+msgstr "平面圖"
+
+#: templates/property-details.php:214
+msgid "EPC"
+msgstr "能源效益証明"
+
+#: templates/property-details.php:224 templates/property-details.php:420
+msgid "Brochures"
+msgstr "小冊子"
+
+#: templates/property-details.php:232
+msgid "Brochure"
+msgstr "小冊子"
+
+#: templates/property-details.php:243 templates/property-details.php:424
+msgid "Videos"
+msgstr "視頻"
+
+#: templates/property-details.php:251
+msgid "Video"
+msgstr "視頻"
+
+#: templates/property-details.php:262 templates/property-details.php:429
+msgid "Virtual Tours"
+msgstr "虛擬旅遊"
+
+#: templates/property-details.php:270
+msgid "Virtual Tour"
+msgstr "虛擬旅遊"
+
+#: templates/property-details.php:280 templates/property-details.php:449
+msgid "Map"
+msgstr "地圖"
+
+#: templates/property-details.php:287 templates/property-details.php:456
+msgid "Street View"
+msgstr "街景"
+
+#: templates/property-details.php:296 templates/property-search.php:221
+msgid "Make Enquiry"
+msgstr "查詢"
+
+#: templates/property-details.php:303
+msgid "Back to Search Results"
+msgstr "返回搜索結果"
+
+#: templates/property-details.php:311
+msgid "Description"
+msgstr "描述"
+
+#: templates/property-details.php:335
+msgid "No description is available for this property."
+msgstr "沒有可用於此物業的描述。"
+
+#: templates/property-details.php:350 templates/property-search.php:208
+msgid "Buyer Fee"
+msgstr "買家費用"
+
+#: templates/property-details.php:382
+msgid "Reference"
+msgstr "參考"
+
+#: templates/property-details.php:398
+msgid "Additional Details"
+msgstr "額外細節"
+
+#: templates/property-details.php:416
+msgid "EPCs"
+msgstr "能源效益証明"
+
+#: templates/property-details.php:436
+msgid "View Virtual Tour"
+msgstr "查看虛擬導覽"
+
+#: templates/property-details.php:471
+msgid "Features"
+msgstr "特徵"
+
+#: templates/property-details.php:490
+msgid "To make an enquiry for this property, please complete the form below."
+msgstr "要對該物業進行查詢，請填寫以下表格。"
+
+#: templates/property-details.php:494
+#, php-format
+msgid ""
+"To make an enquiry for this property, please call us on <strong>%s</strong>, "
+"or complete the form below."
+msgstr ""
+"要對該物業進行查詢，請撥打 <strong>%s</strong> 致電我們，或填寫下面的表格。"
+
+#: templates/property-details.php:501
+msgid "Enquiry"
+msgstr "詢問"
+
+#: templates/property-details.php:512
+msgid "First Name"
+msgstr "名"
+
+#: templates/property-details.php:513
+msgid "Enter first name"
+msgstr "輸入名字"
+
+#: templates/property-details.php:517
+msgid "Last Name"
+msgstr "姓"
+
+#: templates/property-details.php:518
+msgid "Enter last name"
+msgstr "輸入姓氏"
+
+#: templates/property-details.php:522
+msgid "Email"
+msgstr "電子郵件"
+
+#: templates/property-details.php:523
+msgid "Enter email"
+msgstr "輸入電子郵件"
+
+#: templates/property-details.php:527
+msgid "Phone"
+msgstr "電話"
+
+#: templates/property-details.php:528
+msgid "Enter phone"
+msgstr "輸入電話"
+
+#: templates/property-details.php:532
+msgid "Message"
+msgstr "信息"
+
+#: templates/property-details.php:533
+msgid "Enter message"
+msgstr "輸入信息"
+
+#: templates/property-details.php:538
+msgid "I want more details about this property"
+msgstr "我想了解更多有關此物業的詳細資料"
+
+#: templates/property-details.php:542
+msgid "I want to view this property"
+msgstr "我想查看此物業"
+
+#: templates/property-details.php:546
+msgid "I want a valuation"
+msgstr "我想要估價"
+
+#: templates/property-details.php:551
+msgid "Submit"
+msgstr "提交"
+
+#: templates/property-search.php:22
+msgid "Cannot retreive properties at this time. Please try again later."
+msgstr "目前無法檢索物業。請稍後再試。"
+
+#: templates/property-search.php:69
+msgid "Properties"
+msgstr "物業"
+
+#: templates/property-search.php:87
+msgid "Toggle Map"
+msgstr "切換地圖"
+
+#: templates/property-search.php:99
+msgid "No properties to display."
+msgstr "沒有要顯示的物業。"
+
+#: templates/property-search.php:152
+msgid "Bedrooms"
+msgstr "睡房"
+
+#: templates/property-search.php:153
+msgid "Bathrooms"
+msgstr "浴室"
+
+#: templates/property-search.php:154
+msgid "Living Rooms"
+msgstr "客廳"
+
+#: templates/property-search.php:162
+msgid "Featured Property"
+msgstr "特色物業"
+
+#: templates/property-search.php:192
+msgid "Gross Income"
+msgstr "總收入"
+
+#: templates/property-search.php:241
+msgid "Previous Page"
+msgstr "上一頁"
+
+#: templates/property-search.php:249
+#, php-format
+msgid "Page %d of %d"
+msgstr "第 %d 頁，共 %d 頁"
+
+#: templates/property-search.php:258
+msgid "Next Page"
+msgstr "下一頁"
+
+#~ msgid "Previous"
+#~ msgstr "上一個"
+
+#~ msgid "Next"
+#~ msgstr "下一個"
+
+#~ msgid "Cannot fetch search options."
+#~ msgstr "無法獲取搜索選項。"
