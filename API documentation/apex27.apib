@@ -1,0 +1,3864 @@
+FORMAT: 1A
+HOST: https://api.apex27.co.uk
+
+# Apex27 API
+
+This API will allow you to get and create data for various entities within the Apex27 CRM.
+
+The API will only accept data in JSON format. Responses will be sent back in JSON format.
+
+## Rate Limiting
+
+By default, every API key is rate limited to 100 requests / minute.
+
+## Pagination
+
+Pagination will be enforced on  after the version 1.121 update. Pass `page` and `pageSize` in the request query to control the pagination behaviour.
+
+- `page` - Controls the page to fetch.
+- `pageSize` - Controls the size of the page. Default is 25. The range is 25 - 250. Any values outside this range will be clamped.
+
+A `X-Page-Count` header will be returned indicating how many pages in total there are.
+
+## Success Responses
+
+### 200 OK
+
+### 201 Created
+
+## Error Responses
+
+### 400 Bad Request
+
+The request could not be understood by our server.
+
+This may be the result of:
+1. Sending malformed JSON to the API.
+2. Validation has failed.
+
+An array of error messages will be provided if either occurs.
+
+### 401 Unauthorized
+
+The request's `X-Api-Key` header value is invalid. Please check if the API key is correct.
+
+### 404 Not Found
+
+The request is calling an unknown endpoint or the requested resource is no longer available.
+
+### 405 Method Not Allowed
+
+The endpoint called does not support the request method.
+
+For example: `PUT /contacts`
+
+### 429 Too Many Requests
+
+The API key has reached the rate limit.
+
+### 500 Internal Server Error
+
+An error has occurred server-side. This might be a result of a bug on our end, please contact us if this happens.
+
+# Group Contacts
+
+## Contacts [/contacts{?minDtsUpdated}{?email}{?e164}{?single}]
+
+### Get contacts [GET]
+
++ Parameters
+
+    + minDtsUpdated: `2020-01-01 01:23:45` (string, optional) - Return only contacts that have been updated since the provided date/time.
+        + Default: null
+    + email: `test@example.com` (string, optional) - Return only contacts with the provided email address
+        + Default: null
+    + e164: `+447426123456` (string, optional) - Return only contacts with the provided E164-formatted phone number in any phone field
+        + Default: null
+    + single: `0` (number, optional) - Return a single contact if non-zero
+        + Default: 0
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+
++ Response 200 (application/json)
+
+    + Attributes (array[Contact], fixed-type)
+
+### Create contact [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Contact Base)
+
+        + branchId (number, nullable) - ID of a branch returned by the /branches endpoint, if null it will be set as a global contact
+        + userId (number, nullable) - Assigns the contact to the user with the ID provided
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /contacts/2
+
+    + Attributes (Contact)
+
+## Contact [/contacts/{id}]
+
++ Parameters
+
+    + id: 2 (number)
+
++ Attributes (Contact Base)
+
+    + id: 2 (number)
+    + branch (Branch, nullable)
+    + user (User, nullable) - User assigned to the listing
+    + dtsCreated: `2004-02-12 15:19:21` - UTC time
+    + dtsUpdated (nullable) - UTC time
+
+### Get contact [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (Contact)
+
+### Update contact [PUT]
+
++ Request (application/json)
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Contact Base, fixed-type)
+
+        + branchId (number) - ID of a branch returned by the /branches endpoint, if null it will be set as a global contact
+
++ Response 200 (application/json)
+
+    + Attributes (SuccessResponse)
+
++ Response 404 (application/json)
+
+    + Attributes (ErrorResponse)
+
+### Delete contact [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (SuccessResponse)
+
++ Response 404 (application/json)
+
+    + Attributes (ErrorResponse)
+
+# Group Call Logs
+
+## Call Logs [/call-logs]
+
+### Log Call [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+    
+    + Attributes (Call Log Base)
+        - e164 (string) - E164-formatted phone number
+        - email (string) - Email address
+        - create (boolean) - Whether to create a contact if contact cannot be found
+        - title (string) - Contact title
+        - firstName (string) - Contact first name
+        - lastName (string) - Contact last name
+
++ Response 200 (application/json)
+
+    + Attributes (Call Log)
+
+# Group Contact Call Logs
+
+## Contact Call Logs [/contacts/{contactId}/call-logs]
+
++ Parameters
+    + contactId (number, required) - ID of the contact to get call logs for
+
+### Get contact call logs [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (array[Call Log])
+
+### Create contact call log [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Call Log Base)
+        - audioRecordingUrl (string) - URL to audio recording
+
++ Response 200 (application/json)
+
+    + Attributes (Call Log)
+
+## Contact Call Log [/contacts/{contactId}/call-logs/{callLogId}]
+
++ Parameters
+    + contactId (number, required) - ID of the contact
+    + callLogId (number, required) - ID of the call log
+
+### Update contact call log [PUT]
+
++ Request (application/json)
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Call Log Base, fixed-type)
+
++ Response 200 (application/json)
+
+    + Attributes (SuccessResponse)
+
++ Response 404 (application/json)
+
+    + Attributes (ErrorResponse)
+
+### Delete contact call log [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (SuccessResponse)
+
++ Response 404 (application/json)
+
+    + Attributes (ErrorResponse)
+
+
+# Group Contact Notes
+
+## Contact Notes [/contacts/{contactId}/notes]
+
++ Parameters
+    + contactId (number, required) - ID of the contact to get notes for
+
+### Get contact notes [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (array[Note])
+
+### Create contact note [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes
+        + content
+
++ Response 200 (application/json)
+
+    + Attributes (Note)
+
+## Contact Note [/contacts/{contactId}/notes/{noteId}]
+
++ Parameters
+    + contactId (number, required) - ID of the contact the note is for
+    + noteId (number, required) - ID of the note
+
+### Get contact note [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (Note)
+
+### Update contact note [PUT]
+
++ Request (application/json)
+
+    + Headers
+
+            X-Api-Key: 123456abc
+    
+    + Attributes
+        - content (string)
+
++ Response 200 (application/json)
+
+    + Attributes (Note)
+
+### Delete contact note [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+# Group Contact Client Portal
+
+## Authenticate [/client-portal/authenticate]
+
+### Authenticate [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes
+
+        + email: test@test.com (string)
+        + password: abc123 (string)
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + contact (Contact)
+
+## Log In URL [/client-portal/log-in-url{?email}{?invite}]
+
+### Get log in URL [GET]
+
+Fetch a URL for the contact to log into the client portal. The URL will be the authenticate page if the contact has not yet verified their account and set a password otherwise it will go to the normal login page.
+
++ Parameters
+
+    + email: `client@email.com` (string, required)
+    + invite: `0` (number, optional) - Invites the contact with the specified email address if no client portal can be found. This will error if there are multiple contacts with the same email address.
+
++ Request (application/json)
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes
+        - url: `https://customer-client-portal.apex27.co.uk` (string)
+
+
+## Sign In URL [/client-portal/sign-in-url{?email}{?invite}]
+
+### Get sign in URL [GET]
+
+Fetch a URL that will automatically sign the contact into the client portal regardless if their account is authenticated or not.
+
++ Parameters
+
+    + email: `client@email.com` (string, required)
+    + invite: `0` (number, optional) - Invites the contact with the specified email address if no client portal can be found. This will error if there are multiple contacts with the same email address.
+
++ Request (application/json)
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes
+        - url: `https://customer-client-portal.apex27.co.uk` (string)
+        - dtsExpiry: `2021-12-09 12:01:05` (string)
+
+
+# Group Contact Orders
+
+## Orders [/contact-orders{?reference}]
+
+### Get all orders [GET]
+
++ Parameters
+
+    + reference: `123456abc` (string, optional) - Return only orders with the provided reference.
+        + Default: null
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (array[Contact Order], fixed-type)
+
+
+### Create order [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Contact Order Base)
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /contact-orders/1
+
+    + Attributes (Contact Order)
+
+
+## Contact Order [/contact-orders/{id}]
+
++ Parameters
+
+    + id (number)
+
++ Attributes (Contact Order Base)
+
+    + id (number)
+
+### Get an order [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (Contact Order)
+
++ Response 404 (application/json)
+
+    + Attributes (ErrorResponse)
+
+### Update an order [PUT]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Contact Order Base)
+
++ Response 200 (application/json)
+
+    + Attributes (SuccessResponse)
+
++ Response 404 (application/json)
+
+    + Attributes (ErrorResponse)
+
+### Delete an order [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (SuccessResponse)
+
++ Response 404 (application/json)
+
+    + Attributes (ErrorResponse)
+
+# Group Contact Referrals
+
+## Contact Referrals [/contacts/{contactId}/referrals]
+
++ Parameters
+    + contactId (number, required) - ID of the contact to get referrals for
+
+### Get contact referrals [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (array[Contact Referral])
+
+### Create contact referral [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Contact Referral Base)
+
++ Response 200 (application/json)
+
+    + Attributes (Contact Referral)
+
+## Contact Referral [/contacts/{contactId}/referrals/{contactReferralId}]
+
++ Parameters
+    + contactId (number, required) - ID of the contact
+    + contactReferralId (number, required) - ID of the contact referral
+
+### Update contact referral [PUT]
+
++ Request (application/json)
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Contact Referral Base, fixed-type)
+
++ Response 200 (application/json)
+
+    + Attributes (SuccessResponse)
+
++ Response 404 (application/json)
+
+    + Attributes (ErrorResponse)
+
+### Delete contact referral [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (SuccessResponse)
+
++ Response 404 (application/json)
+
+    + Attributes (ErrorResponse)
+
+# Group Branches
+
+## Branches [/branches]
+
+### Get all branches [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (array[Branch], fixed-type)
+
+# Group Listings
+
+## Listings [/listings{?branchId}{?archived}{?minBeds}{?minBaths}{?minPrice}{?maxPrice}{?transactionType}{?propertyType}{?city}{?websiteStatus}{?mainSearchRegionId}{?minDtsCreatedUpdated}{?minDtsUpdated}{?minDtsMarketed}{?includeContacts}{?includeImages}{?includeGallery}{?includeFloorplans}{?includeBrochures}{?includeVirtualTours}{?includeMeterReadings}{?includeOffers}{?includeValuations}{?includeRooms}]
+
+### Get listings [GET]
+
++ Parameters
+
+    + branchId (integer, optional) - Return only listings for this branch ID.
+    + archived (integer, optional)
+    + minBeds: `0` (integer, optional)
+    + minBaths: `0` (integer, optional)
+    + minPrice: `0` (float, optional)
+    + maxPrice: `0` (float, optional)
+    + transactionType: `sale` (string, optional)
+    + propertyType: `bar` (string, optional)
+    + city: `London` (string, optional)
+    + websiteStatus (string, optional)
+    + mainSearchRegionId (integer, optional)
+
+    + minDtsCreatedUpdated: `2020-01-01 01:23:45` (string, optional) - Return only listings that have been created/updated since the provided date/time.
+    + minDtsUpdated: `2020-01-01 01:23:45` (string, optional) - Return only listings that have been updated since the provided date/time.
+    + minDtsMarketed: `2020-01-01 01:23:45` (string, optional) - Return only listings that have been marketed since the provided date/time.
+
+    + includeContacts: 0 (optional, integer) - Include contacts array
+    + includeImages: 0 (optional, integer) - Include images array
+    + includeGallery: 0 (optional, integer) - Include gallery array
+    + includeFloorplans: 0 (optional, integer) - Include floorplans array
+    + includeBrochures: 0 (optional, integer) - Include brochures array
+    + includeVirtualTours: 0 (optional, integer) - Include virtualTours array
+    + includeMeterReadings: 0 (optional, integer) - Include meterReadings array
+    + includeOffers: 0 (optional, integer) - Include offers array
+    + includeValuations: 0 (optional, integer) - Include valuations array
+    + includeRooms: 0 (optional, integer) - Include rooms array
+
++ Response 200 (application/json)
+
+    + Attributes (array[Listing Response Item])
+
+### Create listing [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Listing Base)
+
+        + branchId (number, required)
+        + contactId (number, required) - ID of the vendor or landlord for this listing
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /listings/2
+
+    + Attributes (Listing)
+
+## Listing [/listings/{id}]
+
++ Parameters
+
+    + id (number)
+
++ Attributes (Listing Base)
+
+    + id (number)
+    + branch (Branch)
+    + user (User, nullable) - User assigned to the listing
+
+    + fullReference: `ABC-123456`
+    + rentService (Rent Service)
+    + matchingSearchRegions (array[string])
+    + dtsCreated: `2004-02-12 15:19:21` - UTC time
+    + dtsUpdated (nullable) - UTC time
+    + dtsWithdrawn (nullable) - UTC time
+    + dtsArchived (nullable) - UTC time
+
+### Get a listing [GET /listings/{id}{?includeContacts}{?includeImages}{?includeGallery}{?includeFloorplans}{?includeBrochures}{?includeVirtualTours}{?includeMeterReadings}{?includeOffers}{?includeValuations}{?includeRooms}]
+
++ Parameters
+
+    + includeContacts: 0 (optional, integer) - Include contacts array
+    + includeImages: 0 (optional, integer) - Include images array
+    + includeGallery: 0 (optional, integer) - Include gallery array
+    + includeFloorplans: 0 (optional, integer) - Include floorplans array
+    + includeBrochures: 0 (optional, integer) - Include brochures array
+    + includeVirtualTours: 0 (optional, integer) - Include virtualTours array
+    + includeMeterReadings: 0 (optional, integer) - Include meterReadings array
+    + includeOffers: 0 (optional, integer) - Include offers array
+    + includeValuations: 0 (optional, integer) - Include valuations array
+    + includeRooms: 0 (optional, integer) - Include rooms array
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (Listing Base)
+
+        + id (number)
+        + branch (Branch)
+
++ Response 404 (application/json)
+
+    + Attributes (ErrorResponse)
+
+### Update a listing [PUT]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Listing Base)
+
+        + branchId (number, required)
+
++ Response 200 (application/json)
+
+    + Attributes (SuccessResponse)
+
++ Response 404 (application/json)
+
+    + Attributes (ErrorResponse)
+
+### Delete a listing [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (SuccessResponse)
+
++ Response 404 (application/json)
+
+    + Attributes (ErrorResponse)
+
+
+# Group Listing Media
+
+## Listing Media [/listings/{listingId}/{mediaType}]
+
++ Parameters
+
+    + listingId (number)
+    + mediaType (string) - `images`, `epcs`, `floorplans`, `brochures`, `videos`
+
++ Attributes (File)
+
+### Get media for listing [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (array)
+
+        + (File Base)
+            + order: 0 (number)
+            + thumbnail: https://fs.apex27.co.uk/data_0000/123_0000_320_240.jpg
+            + url: https://fs.apex27.co.uk/data_0000/123_0000.jpg
+        + (File Base)
+            + order: 1 (number)
+            + thumbnail: https://fs.apex27.co.uk/data_0000/123_0001_320_240.jpg
+            + url: https://fs.apex27.co.uk/data_0000/123_0001.jpg
+        + (File Base)
+            + order: 2 (number)
+            + thumbnail: https://fs.apex27.co.uk/data_0000/123_0002_320_240.jpg
+            + url: https://fs.apex27.co.uk/data_0000/123_0002.jpg
+
+### Upload media for listing [POST]
+
++ Request (multipart/form-data)
+
+    As Apiary does not support documenting file uploads. Submit a file using POST with the field name "file" to the endpoint
+    with the usual auth headers and the image should be attached to the listing.
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+
+    + Attributes
+
+        + file - The file as if uploaded by a HTML form (ignore string type)
+        + url - URL of the image to be added to the listing (required if file is omitted)
+        + name - The name of the image
+
++ Response 200 (application/json)
+
+    + Attributes (File Base)
+        + id: 1 (number)
+        + name: Living Room
+        + order: 3 (number)
+        + exportable: true (boolean)
+        + thumbnailUrl: https://fs.apex27.co.uk/data_0000/123_0003_320_240.jpg
+        + url: https://fs.apex27.co.uk/data_0000/123_0003.jpg
+
+
+
+## Listing Media [/listings/{listingId}/{mediaType}/{fileId}]
+
++ Parameters
+
+    + listingId (number)
+    + mediaType (string) - `images`, `floorplans`, `brochures`, `videos`
+    + fileId (number)
+
+### Delete media for listing [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+
+# Group Listing Links
+
+## Listing Links [/listings/{listingId}/links/{linkType}]
+
++ Parameters
+    + listingId (number)
+    + linkType (string) - `virtual-tours`, `videos`, `epc-reports`, `brochures`
+
++ Attributes (Listing Link)
+
+### Get links for listing [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (array[Listing Link])
+
+### Add link for listing [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+            
+    + Attributes
+        + name - The name of the link, if none is provided, a default will be used depending on the link type
+        + url - URL of the link
+
++ Response 200 (application/json)
+
+    + Attributes (Listing Link)
+
+## Listing Link [/listings/{listingId}/{linkType}/{linkId}]
+
++ Parameters
+
+    + listingId (number)
+    + linkType (string) - `virtual-tours`, `videos`
+    + linkId (number)
+
+### Delete link for listing [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+
+# Group Listing Rooms
+
+## Listing Rooms [/listings/{listingId}/rooms]
+
++ Parameters
+    + listingId (number)
+
++ Attributes (Room)
+
+### Get rooms for listing [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array)
+        + (Room)
+        + (Room)
+        + (Room)
+
+### Create room for listing [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Room Base)
+
++ Response 201
+    + Attributes (Room)
+
+## Listing Room [/listings/{listingId}/rooms/{roomId}]
+
++ Parameters
+    + listingId (number)
+    + roomId (number)
+
++ Attributes (Room)
+
+### Get room [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (Room)
+
+### Update room [PUT]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Room Base)
+
++ Response 201
+    + Attributes (Room)
+
+### Delete room [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+
+# Group Listing Offers
+
+## Offers [/offers{?transactionType}{?minDtsUpdated}{?page}]
+
+Get all offers. Limited to 1000 or 25 if using page parameter.
+
+** Not on production server yet **
+
++ Parameters
+    + transactionType: `sale` (Transaction Type, optional) - Return only offers for listings with this transaction type
+    + minDtsUpdated: `2022-01-01 00:00:00` (string, optional) - Return only offers that have been updated since the provided date/time.
+        + Default: null
+    + page: `1` (number, optional)
+
+### Get all offers [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array[Listing Viewing])
+
+## Listing Offers [/listings/{listingId}/offers]
+
++ Parameters
+    + listingId (number)
+
++ Attributes (Offer)
+
+### Get offers for listing [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array)
+        + (Offer)
+        + (Offer)
+        + (Offer)
+
+### Create offer for listing [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Offer Base)
+
++ Response 201
+    + Attributes (Offer)
+
+## Listing Offer [/listings/{listingId}/offers/{offerId}]
+
++ Parameters
+    + listingId (number)
+    + offerId (number)
+
++ Attributes (Offer)
+
+### Get offer [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (Offer)
+
+### Update offer [PUT]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Offer Base)
+
++ Response 201
+    + Attributes (Offer)
+
+### Delete offer [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+
+# Group Listing Valuations
+
+## Valuations [/valuations{?transactionType}{?minDtsUpdated}{?minDts}{?maxDts}]
+
+Get all valuations. Limited to 1000 records.
+
++ Parameters
+    + transactionType: `sale` (Transaction Type, optional) - Return only valuations for the specified listing transaction type
+        + Default: null
+    + minDtsUpdated: `2022-01-01 00:00:00` (string, optional) - Return only valuations that have been updated since the provided date/time.
+        + Default: null
+    + minDts: `2020-01-01 01:23:45` (string, optional) - Return only valuations that take place after or on the provided date/time.
+        + Default: null
+    + maxDts: `2020-12-31 23:59:59` (string, optional) - Return only valuations that take place before or on the provided date/time.
+        + Default: null
+
+### Get all valuations [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array[Listing Valuation])
+
+## Listing Valuations [/listings/{listingId}/valuations{?minDtsUpdated}]
+
++ Parameters
+    + listingId (number)
+    + minDtsUpdated: `2020-01-01 01:23:45` (string, optional) - Return only contacts that have been updated since the provided date/time.
+        + Default: null
+
+
++ Attributes (array[Listing Valuation])
+
+### Get valuations [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array[Listing Valuation])
+
+### Create valuation [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Listing Valuation Base)
+
++ Response 201
+    + Attributes (Listing Valuation)
+
+## Listing Valuation [/listings/{listingId}/valuations/{listingValuationId}]
+
++ Parameters
+    + listingId (number)
+    + listingValuationId (number)
+
+### Get valuation [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (Listing Valuation)
+
+### Update valuation [PUT]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Listing Valuation Base)
+
++ Response 200
+    + Attributes (Listing Valuation)
+
+### Delete valuation [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+
+
+# Group Listing Viewings
+
+## Viewings [/viewings{?minDtsUpdated}{?minDts}{?maxDts}]
+
+Get all viewings. Limited to 1000.
+
++ Parameters
+    + minDtsUpdated: `2022-01-01 00:00:00` (string, optional) - Return only viewings that have been updated since the provided date/time.
+        + Default: null
+    + minDts: `2020-01-01 01:23:45` (string, optional) - Return only viewings that take place after or on the provided date/time.
+        + Default: null
+    + maxDts: `2020-12-31 23:59:59` (string, optional) - Return only viewings that take place before or on the provided date/time.
+        + Default: null
+
+### Get all viewings [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array[Listing Viewing])
+
+
+## Listing Viewings [/listings/{listingId}/viewings]
+
++ Parameters
+    + listingId (number)
+
++ Attributes (array[Listing Viewing])
+
+### Get viewings [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array[Listing Viewing])
+
+### Create viewing [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Listing Viewing Base)
+
++ Response 201
+    + Attributes (Listing Viewing)
+
+## Listing Viewing [/listings/{listingId}/viewings/{listingViewingId}]
+
++ Parameters
+    + listingId (number)
+    + listingViewingId (number)
+
+### Get viewing [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (Listing Viewing)
+
+### Update viewing [PUT]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Listing Viewing Base)
+
++ Response 200
+    + Attributes (Listing Viewing)
+
+### Delete viewing [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+
+# Group Listing Inspections 
+
+## Inspections [/inspections{?transactionType}{?minDts}{?maxDts}]
+
+Get all inspections. Limited to 1000 records.
+
++ Parameters
+    + transactionType: `sale` (Transaction Type, optional) - Return only inspections for the specified listing transaction type
+        + Default: null
+    + minDts: `2020-01-01 01:23:45` (string, optional) - Return only inspections that take place after or on the provided date/time.
+        + Default: null
+    + maxDts: `2020-12-31 23:59:59` (string, optional) - Return only inspections that take place before or on the provided date/time.
+        + Default: null
+
+### Get all inspections [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array[Listing Inspection])
+
+## Listing Inspections [/listings/{listingId}/inspections]
+
++ Parameters
+    + listingId (number)
+
+### Get inspections [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array[Listing Inspection])
+
+### Create inspection [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Listing Inspection Base)
+
++ Response 201
+    + Attributes (Listing Inspection)
+
+## Listing Inspection [/listings/{listingId}/inspections/{listingInspectionId}]
+
++ Parameters
+    + listingId (number)
+    + listingInspectionId (number)
+
+### Get inspection [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (Listing Inspection)
+
+### Update inspection [PUT]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Listing Inspection Base)
+
++ Response 200
+    + Attributes (Listing Inspection)
+
+### Delete inspection [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+
+## Listing Inspection Media [/listings/{listingId}/inspections/{inspectionId}/media]
+
++ Parameters
+
+    + listingId (number)
+    + inspectionId (number)
+
+### Get media for an inspection [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array)
+        + (File)
+        + (File)
+        + (File)
+
+### Upload media for an inspection [POST]
+
++ Request (multipart/form-data)
+
+  As Apiary does not support documenting file uploads. Submit a file using POST with the field name "file" to the endpoint
+  with the usual auth headers and the image should be attached to the inspection.
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+
+    + Attributes
+
+        + file - The file as if uploaded by a HTML form (ignore string type)
+        + url - URL of the media to be added to the inspection (required if file is omitted)
+
++ Response 200 (application/json)
+
+    + Attributes (File Base)
+        + id: 1 (number)
+        + name: Living Room
+        + order: 3 (number)
+        + exportable: true (boolean)
+        + thumbnailUrl: https://fs.apex27.co.uk/data_0000/123_0003_320_240.jpg
+        + url: https://fs.apex27.co.uk/data_0000/123_0003.jpg
+
+### Delete media for an inspection [DELETE /listings/{listingId}/inspections/{inspectionId}/media/{fileId}]
+
++ Parameters
+
+    + listingId (number)
+    + inspectionId (number)
+    + fileId (number)
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+
+# Group Listing Notes
+
+## Listing Notes [/listings/{listingId}/notes]
+
++ Parameters
+    + listingId (number, required) - ID of the listing to get notes for
+
+### Get listing notes [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (array[Note])
+
+### Create listing note [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes
+        + content
+
++ Response 200 (application/json)
+
+    + Attributes (Note)
+
+## Listing Note [/listings/{listingId}/notes/{noteId}]
+
++ Parameters
+    + listingId (number, required) - ID of the listing the note is for
+    + noteId (number, required) - ID of the note
+
+### Get listing note [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (Note)
+
+### Update listing note [PUT]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (Note)
+
+### Delete listing note [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+
+# Group Listing Issues
+
+## Listing Issues [/listings/{listingId}/issues]
+
++ Parameters
+    + listingId (number)
+
++ Attributes (Listing Issue)
+
+### Get issues for listing [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array)
+        + (Listing Issue)
+        + (Listing Issue)
+        + (Listing Issue)
+
+### Create issue for listing [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Listing Issue Base)
+
++ Response 201
+    + Attributes (Listing Issue)
+
+## Listing Issue [/listings/{listingId}/issues/{issueId}]
+
++ Parameters
+    + listingId (number)
+    + issueId (number)
+
++ Attributes (Listing Issue Base)
+
+    + id: 1 (number, required)
+    + dtsCreated (string)
+
+### Get issue [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (Listing Issue)
+
+### Update issue [PUT]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Listing Issue Base)
+
++ Response 201
+    + Attributes (Listing Issue)
+
+### Delete issue [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+
+## Listing Issue Media [/listings/{listingId}/issues/{issueId}/media]
+
++ Parameters
+
+    + listingId (number)
+    + issueId (number)
+
+### Get media for an issue [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array)
+        + (File)
+        + (File)
+        + (File)
+
+### Upload media for an issue [POST]
+
++ Request (multipart/form-data)
+
+    As Apiary does not support documenting file uploads. Submit a file using POST with the field name "file" to the endpoint
+    with the usual auth headers and the image should be attached to the issue.
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+
+    + Attributes
+
+        + file - The file as if uploaded by a HTML form (ignore string type)
+        + url - URL of the media to be added to the issue (required if file is omitted)
+
++ Response 200 (application/json)
+
+    + Attributes (File Base)
+        + id: 1 (number)
+        + name: Living Room
+        + order: 3 (number)
+        + exportable: true (boolean)
+        + thumbnailUrl: https://fs.apex27.co.uk/data_0000/123_0003_320_240.jpg
+        + url: https://fs.apex27.co.uk/data_0000/123_0003.jpg
+
+### Delete media for an issue [DELETE /listings/{listingId}/issues/{issueId}/media/{fileId}]
+
++ Parameters
+
+    + listingId (number)
+    + issueId (number)
+    + fileId (number)
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+
+# Group Listing Keys
+
+## Listing Keys [/listings/{listingId}/keys]
+
++ Parameters
+    + listingId (number)
+
+### Get keys for listing [GET]
+
++ Request
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array)
+        + (Listing Key)
+        + (Listing Key)
+        + (Listing Key)
+
+### Create key for listing [POST]
+
++ Request
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Listing Key Base)
+
++ Response 201
+    + Attributes (Listing Key)
+
+## Listing Key [/listings/{listingId}/keys/{keyId}]
+
++ Parameters
+    + listingId (number)
+    + keyId (number)
+
++ Attributes (Listing Key Base)
+    + id: 1 (number, required)
+    + listingId: 1 (number, required)
+    + actionedUserId: 1 (number) - User that did the check-in / check-out
+    + checkedOutUserId: 1 (number) - User that the key was checked out to
+    + checkedOutContactId: 1 (number) - Contact that the key was checked out to
+    + deleteReason (Listing Key Delete Reason)
+    + dtsCheckedOut: `2025-01-01 00:00:00` - UTC date/time of when the key was checked out.
+    + dtsCreated: `2025-01-01 00:00:00` - UTC date/time of when the key was created.
+
+### Get key [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (Listing Key)
+
+### Update key [PUT]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Listing Key Base)
+
++ Response 201
+    + Attributes (Listing Key)
+
+### Delete key [DELETE /listings/{listingId}/keys/{keyId}{?reason}]
+
++ Parameters
+    + reason (Listing Key Delete Reason)
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+
+### Check-out Key [POST /listings/{listingId}/keys/{keyId}/check-out]
+
+One of `checkedOutUserId` or `checkedOutContactId` must be supplied.
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes
+        + checkedOutUserId (number) - User ID of the user that this key is being checked out to.
+        + checkedOutContactId (number) - Contact ID of the contact that this key is being checked out to.
+        + actionedUserId (number) - User ID of the user that is actioning this check-out.
+        + dtsCheckedOut (string, required) - UTC date/time of the check out.
+
++ Response 200
+
+### Check-in Key [POST /listings/{listingId}/keys/{keyId}/check-in]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes
+        + actionedUserId (number) - User ID of the user that is actioning this check-in.
+
++ Response 200
+
+# Group Leads
+
+## Leads [/leads{?branchId,contactId,listingId,status}]
+
++ Parameters
+    + branchId (number, optional) - ID of the branch to filter by
+    + contactId (number, optional) - ID of the contact to filter by
+    + listingId (number, optional) - ID of the listing to filter by
+    + status (Lead Status, optional)
+
+### Get leads [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (array[Lead])
+
+
+## Create lead [/leads]
+
+### Create lead [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Lead Base)
+        + branchId (number, required) - ID of the branch this lead should be linked to
+        + contactId (number, required) - ID of the contact this lead should be linked to
+        + listingId (number) - ID of the listing this lead should be linked to (if any)
+
++ Response 201 (application/json)
+
+    + Attributes (Lead)
+
+## Lead [/leads/{id}]
+
++ Parameters
+    + id (number) - ID of the lead
+
+### Get lead [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (Lead)
+
+### Update lead [PUT]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Lead Base)
+
++ Response 200 (application/json)
+
+### Delete lead [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+# Group Users
+
+## Users [/users{?postal_code}]
+
++ Parameters
+    + postal_code (string, optional) - Postal code to filter users by (using User Regions). `branchId` will be returned in each user record which will correspond to the user region branch.
+
+### Get users [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array[User])
+
+## User [/users/{id}]
+
++ Parameters
+    + id (number)
+
+### Get user [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (User)
+
+# Group Availability
+
+## Valuations [/availability/valuations{?api_key}{?postal_code}{?date_start}{?date_end}{?time_start}{?time_end}]
+
+User Regions must be configured in Apex27 for this endpoint to work properly.
+
+Based on the postal code supplied, Apex27 will determine which user is responsible for that region and will use their personal calendar to determine their availability.
+
+### Get Availability [GET]
+
++ Parameters
+
+    - api_key (string)
+    - postal_code: `SS1` (string)
+    - date_start: `2021-10-29` (string)
+    - date_end: `2021-10-31` (string)
+    - time_start: `08:00:00` (string)
+    - time_end: `21:00:00` (string)
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "user": {},
+            "availability": {
+                "2021-10-29": {
+                    "08:00:00": true,
+                    "09:00:00": false,
+                    "10:00:00": true
+                }
+            }
+        }
+
+## Viewings [/availability/viewings{?api_key}{?listing_id}{?date_start}{?date_end}{?time_start}{?time_end}]
+
+The vendor/landlord's availability must be configured in Apex27 for this endpoint to work properly. This is configured in the client portal for the contact.
+
+The agent's availability is not taken into consideration unless the listing has an upsell with the "Accompanied Viewings" effect added.
+
+### Get Availability [GET]
+
++ Parameters
+
+    - api_key (string)
+    - listing_id: `1` (number)
+    - date_start: `2021-10-29` (string)
+    - date_end: `2021-10-31` (string)
+    - time_start: `08:00:00` (string)
+    - time_end: `21:00:00` (string)
+
++ Response 200 (application/json)
+
+        {
+            "success": true,
+            "listing": {},
+            "availability": {
+                "2021-10-29": {
+                    "08:00:00": true,
+                    "09:00:00": false,
+                    "10:00:00": true
+                }
+            }
+        }
+
+# Group Completions
+
+## Completions [/completions]
+
+### Get completions [GET /completions{?activeOnly}{?listingId}{?branchId}{?collapse}]
+
++ Parameters
+    + activeOnly (boolean, optional) - If `1` is passed, only return active completions.
+    + listingId (number, optional) - Completions that belong to this listing only.
+    + branchId (number, optional) - Completions that belong to this branch only.
+    + collapse (array[String], optional) - Pass `buyerSolicitor`, `vendorSolicitor`, `user`, `progressor`, `buyers` or `chain` to remove the respective fields from the completion object
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array[Listing Completion])
+
+### Get completion [GET /completions/{id}]
+
++ Parameters
+    + id (number)
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (Listing Completion)
+
+# Group Tenancies
+
+## Tenancies [/tenancies]
+
+### Get tenancies [GET /tenancies{?activeOnly}{?listingId}{?branchId}{?tenantId}{?minDtsUpdated}{?collapse}]
+
++ Parameters
+    + activeOnly (boolean, optional) - If `1` is passed, only return active tenancies.
+    + listingId (number, optional) - Tenancies that belong to this listing only.
+    + branchId (number, optional) - Tenancies that belong to this branch only.
+    + tenantId (number, optional) - Tenancies with this tenant only.
+    + minDtsUpdated: `2020-01-01 01:23:45` (string, optional) - Return only tenancies that have been updated since the provided date/time.
+    + collapse (array[String], optional) - Pass `listing`, `tenants` or `noticeContact` to remove the respective fields from the tenancy object
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array[Tenancy])
+
+## Tenancy [/tenancies/{id}]
+
++ Parameters
+    + id (number)
+
+### Get tenancy [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (Tenancy)
+
+### Patch tenancy [PATCH]
+
+Only the attributes listed can be updated at this time. If a partial security deposit 
+is added to Apex27 after setting `dtsDepositReceived` by the API, it will be reset to NULL.
+
++ Request (application/json)
+
+    + Headers
+
+            X-Api-Key: 123456abc
+            
+    + Attributes
+    
+        - depositCurrency: `GBP`
+        - depositAmount: 2153.07
+        - depositScheme: 2 (Deposit Scheme)
+        - depositSchemeReference: `APITEST`
+        - dtsDepositReceived: `2024-08-05 12:00:00`
+
++ Response 200
+    + Attributes (Tenancy)
+
+
+# Group Search Regions
+
+## Search Regions [/search-regions]
+
+### Get search regions [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array[Search Region])
+
+
+## Search Region [/search-regions/{id}]
+
++ Parameters
+    + id (number)
+
+### Get search region [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (Search Region)
+
+# Group Listing Searches
+
+## Notes
+
+### Update Caution
+
+Updating a search requires a full object to be passed at all times. Anything omitted in the request will be removed from the search.
+
+### Requirement Level
+
+The `level` attribute in requirements can be ignored and omitted in requests. The value of `0` for optional is not supported at the moment.
+
+### Requirement Mode
+
+The `mode` setting is supported by the `property_types` and `features` requirements. It has no effect on any other requirements.
+
+### Features
+
+Feature values are constructed by the category of the feature then appended by the value of the feature with the character `_` replaced with `-`.
+
+Examples:
+
+- Heating - Gas Central becomes `heating-gas-central`
+- Outside Space - Back Yard becomes `outside-space-back-yard`
+- Parking - Double Garage becomes `parking-double-garage`
+- Custom Feature - Smart Door becomes `custom-feature-smart-door`
+
+## Get Listing Searches [/listing-searches{?contact_id}]
+
++ Parameters
+    + contact_id (number)
+
+### List a contact's searches [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+    + Attributes (array[Listing Search])
+
+## Create Listing Search [/listing-searches]
+
+### Create listing search [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Listing Search Base)
+
+
++ Response 201
+    + Attributes (Listing Search)
+
+## Update/Delete Listing Searches [/listing-searches/{id}]
+
+### Update listing search [PUT]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Listing Search Base)
+
++ Response 201
+    + Attributes (Listing Search)
+
+### Delete listing search [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200
+
+# Group Documents
+
+## Documents [/documents]
+
+### Add document [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Document Request)
+
++ Response 201
+    + Attributes (Document)
+
+# Group Notifications
+
+## Notifications [/notifications]
+
+### Create notification [POST]
+
+At least one of `userId`, `branchId`, `mainBranchId`, `listingId` and `contactId` must be provided.
+
++ Request (application/json)
+
+    + Headers
+
+            X-Api-Key: 123456abc
+    
+    + Attributes
+    
+        - userId: 123 (number)
+        - branchId: 123 (number)
+        - mainBranchId 123 (number) - Only users who has set the branch with this ID as their main branch
+        - listingId: 123 (number)
+        - contactId: 123 (number)
+        - notifyBranch: false (boolean) - Controls whether the branch is notified instead of the assigned user of the listing or contact.
+        - title: `Notification Title` (string, required) - Max length 240 characters.
+        - body: `Notification body.` (string, required) - Max length 64,000 characters.
+        - icon: `bell` (string) - Notification icon. FontAwesome class name without the `fa-` prefix.
+
++ Response 200 (application/json)
+
+        {
+            "success": true
+        }
+
+# Group Tasks
+
+## Tasks [/tasks{?contactId,listingId,createdBy,assignedTo}]
+
++ Parameters
+    + contactId (number, optional) - Filter by this contact ID
+    + listingId (number, optional) - Filter by this listing ID
+    + createdBy (number, optional) - Filter by tasks created by this user ID
+    + assignedTo (number, optional) - Filter by tasks assigned to this user ID
+
+### Get tasks [GET]
+
+At least one filter parameter must be set.
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (array[Task])
+
+
+## Create task [/tasks]
+
+### Create task [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Task Base)
+        + contactId (number) - ID of the contact this task should be linked to (if any)
+        + listingId (number) - ID of the listing this task should be linked to (if any)
+
++ Response 201 (application/json)
+
+    + Attributes (Task)
+
+## Task [/tasks/{id}]
+
++ Parameters
+    + id (number) - ID of the task
+
+### Get task [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (Task)
+
+### Update task [PUT]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Task Base)
+
++ Response 200 (application/json)
+
+### Delete task [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+
+
+# Group Webhooks
+
+## Webhooks [/webhooks]
+
+### Get webhooks [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (array[Webhook])
+
+### Create webhook [POST]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Webhook Base)
+
++ Response 201 (application/json)
+
+    + Attributes (Webhook)
+
+## Webhook [/webhooks/{id}]
+
++ Parameters
+    + id (number) - ID of the webhook
+
+### Get webhook [GET]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes (Webhook)
+
+### Update webhook [PUT]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
+    + Attributes (Webhook Base)
+
++ Response 200 (application/json)
+
+### Delete webhook [DELETE]
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+# Group Global Search
+
+## Global Search [/global-search{?term}{?branchId}{?transactionType}{?includeArchived}{?searchListings}{?searchContacts}{?searchIssues}{?searchTenancies}]
+
+### Search [GET]
+
++ Parameters
+
+    + term: '' (string) - Search term
+    + branchId (number, optional) - Branch ID to filter by
+    + transactionType (string, optional) - Transaction type to filter by (only affects listing results)
+    + includeArchived: 0 (number) - Include archived items
+    + searchListings: 0 (number) - Search listings
+    + searchContacts: 0 (number) - Search contacts
+    + searchIssues: 0 (number) - Search issues
+    + searchTenancies: 0 (number) - Search tenancies
+
++ Request
+
+    + Headers
+
+            X-Api-Key: 123456abc
+
++ Response 200 (application/json)
+
+    + Attributes
+    
+        - results (array[Global Search Result])
+        - listingCounts (Global Search Count)
+        - contactCounts (Global Search Count)
+        - issueCounts (Global Search Count)
+        - tenancyCounts (Global Search Count)
+
+
+## Data Structures
+
+### Contact Base (object)
++ archived: false (boolean)
++ title (Title)
++ firstName: Joe (required)
++ lastName: Bloggs (required)
++ companyName: Bloggs Ltd
++ legalEntity - Read-only attribute for vendors/landlords, buyers and
++ occupation: Carpenter
++ dateOfBirth: `1970-01-01`
++ address1: 1 Test Avenue
++ address2 (nullable, optional)
++ address3 (nullable)
++ address4 (nullable)
++ city: Test
++ county: Essex
++ postalCode: SS1 5JU
++ country: GB
++ email: joe@test.com
++ mobile: 07123 4567890
++ phone: 01234 567890
++ workPhone: 01234 567891
++ fax: 01234 567892
++ buyingPosition (Buying Position)
++ buyingReason (Buying Reason)
++ sellingPosition (Selling Position)
++ sellingPositionStatus (Selling Position Status)
++ sellingAgentName (string)
++ sellingReason (Selling Reason)
++ preferredContactMethod (ContactMethod)
++ emailConsent: true (boolean)
++ smsConsent: true (boolean)
++ phoneConsent: true (boolean)
++ postConsent: false (boolean)
++ marketingConsent: false (boolean)
++ listingMatchConsent: false (boolean)
++ customTags (array[string])
++ isSalesApplicant: false (boolean)
++ isLettingsApplicant: false (boolean)
++ isNewHomesApplicant: false (boolean)
++ isLandApplicant: false (boolean)
++ isCommercialSalesApplicant: false (boolean)
++ isCommercialLettingsApplicant: false (boolean)
++ isVendor: true (boolean)
++ isLandlord: false (boolean)
++ source: API (nullable, optional)
+
+### Lead Base (object)
++ notes
++ source (required)
++ status (required, Lead Status)
++ howDidYouHear (required, How Did You Hear)
++ requestValuation (required, boolean)
++ requestViewing (required, boolean)
++ requestListingDetails (required, boolean)
+
+### Lead (Lead Base)
++ id (number)
++ branchId (number)
++ contactId (number)
++ listingId (number)
+
+### Branch (object)
++ id: 1 (number)
++ name: Apex27 (required)
++ address1: 123 London Road (required)
++ address2 (nullable)
++ city: `Southend-on-Sea` (required)
++ county: Essex (required)
++ postalCode: SS1 2JU (required)
++ country: GB (required) - ISO-3166 Alpha-2
++ phone: 01234 567890
++ fax (nullable)
++ email: info@apex27.co.uk
++ hasSales: true (boolean)
++ hasLettings: true (boolean)
++ hasNewHomes: true (boolean)
++ hasLand: true (boolean)
++ hasAuctions: false (boolean)
++ hasCommercialSales: false (boolean)
++ hasCommercialLettings: false (boolean)
+
+### SuccessResponse (object)
++ success: true (boolean)
+
+### ErrorResponse (object)
++ success: false (boolean)
++ message: Not found (string)
+
+### Listing Base (object)
++ archived: false (boolean)
++ reference: `123456` - Auto-generated on create and becomes read-only after
++ address1: Liverpool Road (required)
++ address2 (nullable)
++ address3 (nullable)
++ address4 (nullable)
++ city: London (required)
++ county: Greater London
++ postalCode: N1 1LA (required)
++ country: GB - ISO-3166 Alpha-2 (required)
++ displayAddress (required)
++ locationType (Location Type, nullable)
++ summary: This is a test summary (nullable)
++ description: This is a test description (nullable)
++ customDescription1
++ customDescription2
++ customDescription3
++ customDescription4
++ customDescription5
++ customDescription6
++ bullets (array[string])
+    - Bullet 1
+    - Bullet 2
+    - Bullet 3
++ priceCurrency: GBP (required) - ISO-4217
++ price: 125000 (number, required)
++ pricePrefix (Price Prefix, nullable)
++ tenure (Tenure, nullable)
++ rentFrequency (Rent Frequency, nullable)
++ transactionType (Transaction Type, required)
++ status (Listing Status, required)
++ websiteStatus (string, nullable)
++ mainSearchRegionId (number, nullable)
++ saleProgression (Listing Sale Progression)
++ propertyType (Property Type, required)
++ displayPropertyType (nullable)
++ propertySubType (Property Sub Type, nullable)
++ tenancyType (Tenancy Type, nullable) - This field cannot be updated if the tenancy type is already set to HMO
++ bedrooms: 3 (number, required)
++ bathrooms: 1 (number, required)
++ receptions (number, nullable)
++ ensuites (number, nullable)
++ toilets (number, nullable)
++ kitchens (number, nullable)
++ diningRooms (number, nullable)
++ yearBuilt (number, nullable)
++ condition (Listing Condition)
++ ageCategory (Listing Age Category, nullable)
++ furnished (Listing Furnished, nullable)
++ commercialUseClasses (array[Listing Commercial Use Class], nullable)
++ accessibilityFeatures (array[Listing Accessibility Feature], nullable)
++ heatingFeatures (array[Listing Heating Feature], nullable)
++ parkingFeatures (array[Listing Parking Feature], nullable)
++ outsideSpaceFeatures (array[Listing Outside Space Feature], nullable)
++ electricitySupplyFeatures (array[Listing Electricity Supply Feature], nullable)
++ waterSupplyFeatures (array[Listing Water Supply Feature], nullable)
++ sewerageSupplyFeatures (array[Listing Sewerage Supply Feature], nullable)
++ broadbandSupplyFeatures (array[Listing Broadband Supply Feature], nullable)
++ floodSources (array[Listing Flood Source], nullable)
++ customFeatures (array[string], nullable) - `Refer to Admin > Settings > Listing Features for valid values`
++ internalArea (number, nullable)
++ internalAreaUnit (Listing Area Unit, nullable)
++ externalArea (number, nullable)
++ externalAreaUnit (Listing Area Unit, nullable)
++ floors (number, nullable) - Number of floors in the building.
++ entranceFloor (Entrance Floor, nullable)
++ floorNumber (number, nullable)
++ levelsOccupied (number, nullable)
++ latitude (number, nullable)
++ longitude (number, nullable)
++ grossYield (number, nullable)
++ totalIncomeText (string, nullable)
++ councilTaxAmount (number, nullable) - Annual council tax amount
++ councilTaxBand (string, nullable)
++ domesticRates (number, nullable) - Annual domestic rates amount (Northern Ireland only)
++ serviceChargeAmount (number, nullable) - Annual service charge amount
++ serviceChargeDescription (string, nullable)
++ groundRentAmount (number, nullable) - Annual ground rent amount
++ groundRentDescription (string, nullable)
++ groundRentReviewPeriod (number, nullable) - Ground rent review period in years
++ groundRentPercentageIncrease (number, nullable)
++ insuranceDescription (string, nullable)
++ dateLeaseStart (string, nullable) - YYYY-MM-DD format
++ leaseYearsRemaining (number)
++ leaseDuration (number)
++ dateOfInstruction (string, nullable) - Date of instruction in YYYY-MM-DD format
++ feeType (Listing Fee Type, nullable)
++ epcExempt (boolean, nullable) - Whether EPC is exempt for this listing
++ epcEeCurrent (number, nullable)
++ epcEePotential (number, nullable)
++ epcEiCurrent (number, nullable)
++ epcEiPotential (number, nullable)
++ epcArCurrent (number, nullable)
++ dtsEpcExpiry (string, nullable) - YYYY-MM-DD HH:mm:ss format
++ epcReference (string, nullable) - EPC reference number
++ epcNotes (string, nullable)
++ upsellNames: EPC, Viewings, Premium (array[string])
++ flags (
++ showPrice (boolean)
++ exportable (boolean) - Whether this listing should be uploaded to websites and portals
++ matchable (boolean) - Whether this listing should be matchable in applicant searches
++ featured (boolean)
++ unlisted (boolean) - Whether this listing on Apex27-hosted websites and WordPress plugin
+
+### File Base (object)
++ type (File Type)
++ name: Living Room
++ order: 0 (number)
++ exportable: true (boolean) - Whether this file should be uploaded to websites and portals
+
+### File (File Base)
++ id: 1 (number, required)
++ thumbnailUrl: https://fs.apex27.co.uk/data_0000/123_0000_320_240.jpg
++ url: https://fs.apex27.co.uk/data_0000/123_0000.jpg
+
+### Offer Base (object)
++ contactId: 1 (number, required)
++ currency: GBP (required)
++ amount: 100000 (number, required)
++ counterAmount (number)
++ status: new (Offer Status, required)
++ notes
++ dtsOffer: `2021-02-20 09:00:00` - UTC date/time of when offer was received
++ dtsCounterOffer - UTC date/time of when counter offer was received
+
+### Offer (Offer Base)
++ id: 1 (number, required)
++ listingId: 1 (number, required)
++ dtsAccepted - UTC date/time of when status was changed to "accepted"
+
+### Room Base (object)
++ name (string, required)
++ description (string)
++ length (number)
++ width (number)
++ unit (Room Unit)
++ dimensionNotes (string)
+
+### Room (Room Base)
++ id: 1 (number, required)
++ order (number)
++ dtsCreated (string)
++ dtsUpdated (string)
++ updateMd5Hash (string)
+
+### Listing Issue Base (object)
++ type (Listing Issue Type, required) - If not supplied, it will default to Miscellaneous
++ status (Listing Issue Status, required)
++ managedByUserId (number)
++ reportedByContactId (number)
++ reportedByUserId (number)
++ reportedSource (Listing Issue Source, required)
++ notes (string, required)
++ progressNotes (string)
++ progressNotesVisible (boolean) - Whether progress notes are visible on the client portal
++ billing (Listing Issue Billing) - If not supplied, it will default to the branch default
++ priority (Listing Issue Priority) - If not supplied, it will default to Medium priority
++ dtsDue: `2021-02-20 09:00:00` - UTC date/time of when issue is due, please use end of day for time, i.e. 23:59:59
+
+### Listing Key Base (object)
++ trackingNumber (string, required)
++ colour (string, required)
++ numberOfKeys (number, required)
++ notes (string)
+
+### User
++ id: 1 (number, required)
++ email: user@apex27.co.uk (required)
++ title: Mr
++ firstName: Apex
++ lastName: 27
++ isActive: true (boolean)
+
+### Contact Referral Base (object)
++ referralContactId: 12345 (number, required)
++ listingId: 12345 (number)
++ type: 1 (Contact Referral Type, required)
++ fee: `100.00` (string, required)
++ date: `2024-09-10` (string)
++ status: 1 (Contact Referral Status)
++ note: `Note` (string)
+
+### Contact Referral (Contact Referral Base)
++ id: 1 (number, required)
++ contactId: 12345 (number, required)
++ userId: 12345 (number, required) - User that created the referral
++ dtsCreated: `2024-09-10 11:00:00` (string)
+
+## Contact Referral Type (enum)
++ 0 (number) - Other
++ 1 (number) - Solicitor
++ 2 (number) - Surveyor
++ 3 (number) - Mortgage
++ 4 (number) - Removal
++ 5 (number) - Energy
++ 6 (number) - Internet
++ 7 (number) - Cleaning
++ 8 (number) - Gym
++ 9 (number) - Insurance
++ 10 (number) - Builder
++ 11 (number) - Electrician
++ 12 (number) - Plumber
++ 13 (number) - Lettings
++ 14 (number) - 
+
+## Contact Referral Status (enum)
++ 0 (number) - Not Referred
++ 1 (number) - Referred
++ 2 (number) - Declined
++ 3 (number) - Accepted
++ 4 (number) - Invoiced
++ 5 (number) - Paid
+
+## ContactMethod (enum)
++ 0 (number) - Phone
++ 1 (number) - Mobile
++ 2 (number) - Work
++ 3 (number) - Email
++ 4 (number) - SMS
+
+## Title (enum)
++ Withheld
++ Mr
++ Ms
++ Mrs
++ Miss
++ Dr
++ Prof
++ Rev
++ Lady
++ Lord
++ Sir
++ Mr & Mrs
+
+## Transaction Type (enum)
++ sale
++ rent
++ land
++ commercial_sale
++ commercial_rent
+
+## Listing Status (enum)
++ pending
++ available
++ sold_subject_to_contract
++ sold_subject_to_concluded_missives - Scotland only
++ under_offer
++ reserved
++ let_agreed
++ let
++ sold
+
+## Sale Progression (enum)
++ valuation
++ for_sale
++ under_offer
++ sstc
++ completed
++ withdrawn
+
+## Price Prefix (enum)
++ guide_price
++ fixed_price
++ offers_in_excess_of
++ offers_in_region_of
++ sale_by_tender
++ from
++ shared_ownership
++ part_buy_part_rent
++ shared_equity
++ coming_soon
++ offers_over
++ offers_invited
++ non_quoting
++ asking_price
++ reduced_to
+
+## Tenure (enum)
++ freehold
++ leasehold
++ feudal
++ commonhold
++ share_of_freehold
++ flying_freehold
+
+## Rent Frequency (enum)
++ PPPW - Per person per week
++ D - Daily
++ W - Weekly
++ M - Monthly
++ Q - Quarterly
++ A - Annually
+
+## Property Type (enum)
++ apartment - Apartment
++ bar - Bar
++ barn_conversion - Barn Conversion
++ block_of_flats - Block of Flats
++ bungalow - Bungalow
++ business_park - Business Park
++ cafe - Cafe
++ cave_house - Cave House
++ chalet - Chalet
++ chalet_bungalow - Chalet Bungalow
++ character_property - Character Property
++ chateau - Chateau
++ church - Church
++ cluster_house - Cluster House
++ coach_house - Coach House
++ commercial_property - Commercial Property
++ cortijo - Cortijo
++ cottage - Cottage
++ country_house - Country House
++ detached_house - Detached House
++ detached_bungalow - Detached Bungalow
++ end_terrace - End-terrace
++ end_terrace_bungalow - End-terrace Bungalow
++ equestrian - Equestrian
++ farm - Farm
++ farmhouse - Farmhouse
++ finca - Finca
++ flat - Flat
++ hotel - Hotel
++ house - House
++ house_share - House Share
++ houseboat - Houseboat
++ industrial - Industrial
++ land - Land
++ leisure - Leisure
++ light_industrial - Light Industrial
++ link_detached - Link-detached
++ link_detached_bungalow - Link-detached Bungalow
++ lodge - Lodge
++ longere - Longere
++ maisonette - Maisonette
++ mews - Mews
++ mixed_use - Mixed Use
++ nightclub - Nightclub
++ office - Office
++ park_home - Park Home
++ parking - Parking
++ penthouse - Penthouse
++ pub - Pub
++ restaurant - Restaurant
++ retail - Retail
++ riad - Riad
++ semi_detached_house - Semi-detached House
++ semi_detached_bungalow - Semi-detached Bungalow
++ steading - Steading
++ storage - Storage
++ studio - Studio
++ terraced - Terraced House
++ terraced_bungalow - Terraced Bungalow
++ town_house - Town House
++ villa - Villa
++ warehouse - Warehouse
+
+## Property Sub Type (enum)
++ ground_floor - Only valid for Studio/Flat property types
++ middle_floor - Only valid for Studio/Flat property types
++ penthouse - Only valid for Studio/Flat property types
++ detached - Only valid for property types that are not Studio/Flat/Land
++ semi_detached - Only valid for property types that are not Studio/Flat/Land
++ terraced - Only valid for property types that are not Studio/Flat/Land
++ finca - Only valid for Villa property type
++ residential - Only valid for Land property type
++ commercial - Only valid for Land property type
+
+## File Type (enum)
++ 0 (number) - Image
++ 1 (number) - EPC
++ 4 (number) - Floorplan
++ 6 (number) - Video
+
+## Lead Status (enum)
++ new - New
++ approached - Approached
++ awaiting - Awaiting Response
++ action - Action Required
++ completed - Completed
++ closed - Closed
+
+## How Did You Hear (enum)
++ 0 (number) - Word of Mouth
++ 1 (number) - Sale Board
++ 2 (number) - Newspaper
++ 3 (number) - Google
++ 4 (number) - Bing
++ 5 (number) - Other Search Engine
++ 6 (number) - Television
++ 7 (number) - Radio
++ 8 (number) - Poster
++ 9 (number) - Direct Mail
++ 10 (number) - Leaflet
++ 11 (number) - Window Card
++ 12 (number) - Other
++ 13 (number) - Website
+
+## Offer Status (enum)
++ new - New
++ considering - Considering
++ accepted - Accepted
++ rejected - Rejected
++ withdrawn - Withdrawn
+
+## Listing Viewing Feedback (enum)
++ 1 (number) - Too Small
++ 2 (number) - Too Dark
++ 3 (number) - Overpriced
++ 4 (number) - Outdated
++ 5 (number) - Unappealing
++ 6 (number) - Needs Refurbishing
++ 7 (number) - Lack of Curb Appeal
++ 8 (number) - Lack of Parking
++ 9 (number) - OK
++ 10 (number) - Nice
++ 11 (number) - Lovely
++ 12 (number) - Additional Viewing Required
++ 13 (number) - Considering Offer
++ 14 (number) - Shortlisted
++ 15 (number) - No Show
+
+## Listing Viewing Outcome
++ 0 (number) - Pending
++ 1 (number) - Interested
++ 2 (number) - Additional Viewing Required
++ 3 (number) - Booked Another Viewing
++ 4 (number) - Considering Offer
++ 5 (number) - Offer Form Sent
++ 6 (number) - Offer Made
++ 7 (number) - Not Interested
++ 8 (number) - No Response
++ 9 (number) - Follow Up Not Required
++ 10 (number) - Found Another Property
+
+## Listing Sale Progression (enum)
++ valuation - Valuation
++ not_instructed - Not Instructed
++ withdrawn - Withdrawn
++ for_sale - For Sale
++ under_offer - Under Offer
++ sstc - SSTC
++ exchange - Exchange
++ completed - Completed
++ available - Available
++ let_agreed - Let Agreed
++ let - Let
+
+## Listing Condition (enum)
++ excellent - Excellent
++ good - Good
++ fair - Fair
++ some_work_needed - Some work needed
++ work_required_throughout - Work required throughout
++ major_renovation_required - Major renovation required
+
+## Listing Age Category (enum)
++ new_build - New build
++ modern - Modern
++ 1980_to_1990 - 1980s to 1990s
++ 1950_to_1970 - 1950s to 1970s
++ 1940 - 1940s
++ 1920_to_1930 - 1920s to 1930s
++ edwardian - Edwardian (1901 to 1910)
++ victorian - Victorian (1837 to 1901)
++ georgian - Georgian (1714 to 1830)
++ pre_18th_century - Pre-18th Century
+
+## Listing Furnished (enum)
++ furnished - Furnished
++ part_furnished - Part Furnished
++ unfurnished - Unfurnished
++ furnished_or_unfurnished - Furnished/Unfurnished
+
+## Listing Commercial Use Class (enum)
++ A1 - Shops
++ A2 - Financial and Professional Services
++ A3 - Restaurants and Cafes
++ A4 - Drinking Establishments
++ A5 - Hot Food Take away
++ B1 - Business
++ B2 - General Industrial
++ B8 - Storage and Distribution
++ C1 - Hotels
++ C2 - Residential Institutions
++ C2A - Secure Residential Institutions
++ C3 - Dwelling Houses
++ C4 - House of Multiple Occupation
++ D1 - Non-Residential Institutions
++ D2 - Assembly and Leisure
++ SUI_GENERIS_1 - Sui Generis 1
++ SUI_GENERIS_2 - Sui Generis 2
+
+## Listing Accessibility Feature (enum)
++ not_suitable_for_wheelchair_users - Not suitable for wheelchair users
++ level_access - Level access
++ lift_access - Lift access
++ ramped_access - Ramped access
++ wet_room - Wet room
++ wide_doorways - Wide doorways
++ step_free_access - Step-free access
++ level_access_shower - Level-access shower
++ lateral_living - Lateral living
++ disabled_features - Disabled Features
++ variable_height_kitchen_surfaces - Variable Height Kitchen Surfaces
+
+## Listing Heating Feature (enum)
++ air_conditioning - Air Conditioning
++ central - Central
++ communal - Communal
++ double_glazing - Double Glazing
++ eco_friendly - Eco-Friendly
++ electric - Electric
++ electric_room_headers - Electric Room Heaters
++ electric_storage - Electric Storage
++ gas - Gas
++ gas_central - Gas Central
++ lpg - LPG
++ night_storage - Night Storage
++ oil - Oil
++ oil_central - Oil Central
++ solar - Solar
++ solar_water - Solar Water
++ solid_fuel - Solid Fuel
++ under_floor - Under Floor
++ wood_burner - Wood Burner
++ open_fire - Open Fire
++ biomass_boiler - Biomass Boiler
++ ground_source_heat_pump - Ground-source Heat Pump
++ air_source_heat_pump - Air-source Heat Pump
++ solar_photovoltaic_thermal - Solar PV Thermal
++ underfloor_heating - Underfloor Heating
++ solar_thermal - Solar Thermal
++ other - Other
+
+## Listing Parking Feature (enum)
++ allocated - Allocated
++ communal - Communal
++ covered - Covered / Carport
++ garage - Garage
++ single_garage - Single Garage
++ double_garage - Double Garage
++ triple_garage - Triple Garage
++ driveway - Driveway
++ gated - Gated
++ off_street - Off-Street
++ on_street - On-Street
++ rear - Rear
++ permit - Permit
++ private - Private
++ residents - Residents
++ underground - Underground
++ no_permit - No Permit
++ not_allocated - Not Allocated
++ no_parking_available - No Parking Available
++ ev_charging - EV Charging
++ disabled_parking_available - Disabled Parking Available
++ no_disabled_parking_available - No Disabled Parking Available
++ garage_en_bloc - Garage En Bloc
++ garage_detached - Garage Detached
++ garage_integral - Garage Integral
++ undercroft - Undercroft
+
+## Listing Outside Space Feature (enum)
++ garden - Garden
++ large_garden - Large Garden
++ south_facing_garden - South-Facing Garden
++ back_garden - Back Garden
++ back_yard - Back Yard
++ communal_garden - Communal Garden
++ enclosed_garden - Enclosed Garden
++ front_garden - Front Garden
++ private_garden - Private Garden
++ rear_garden - Rear Garden
++ terrace - Terrace
++ patio - Patio
++ balcony - Balcony
++ roof_terrace - Roof Terrace
++ conservatory - Conservatory
+
+## Listing Electricity Supply Feature (enum)
++ mains_supply - Mains Supply
++ wind_turbine - Wind Turbine
++ solar_pv_panels - Solar PV Panels
++ private_supply - Private Supply
++ generator - Generator
++ other - Other
+
+## Listing Water Supply Feature (enum)
++ mains_supply - Mains Supply
++ private_supply - Private Supply
++ private_well - Private Well
++ private_spring - Private Spring
++ private_borehole - Private Borehole
++ public_well - Public Well
++ public_spring - Public Spring
++ public_borehole - Public Borehole
++ other - Other
+
+## Listing Sewerage Supply Feature (enum)
++ mains_supply - Mains Supply
++ private_supply - Private Supply
++ septic_tank - Septic Tank
++ domestic_small_sewerage_treatment_plants - Domestic Small Sewerage Treatment Plants
++ cesspit - Cesspit
++ cesspool - Cesspool
++ other - Other
+
+## Listing Broadband Supply Feature (enum)
++ adsl - ADSL
++ cable - Cable
++ fixed_wireless - Fixed Wireless
++ fttc - Fibre To The Cabinet
++ fttp - Fibre To The Premises
++ mobile - Mobile
++ none - None
++ other - Other
++ satellite - Satellite
+
+## Listing Flood Source (enum)
++ river
++ sea
++ groundwater
++ lake
++ reservoir
++ other
+
+## Listing Area Unit (enum)
++ sq_ft - Square feet
++ sq_m - Square metre
++ acres - Acres (for external area only)
++ hectares - Hectares (for external area only)
+
+## Room Unit (enum)
++ m - Metres
++ cm - Centimetres
++ mm - Millimetres
++ ft - Feet
++ in - Inches
+
+## Listing Valuation Status (enum)
++ requested - Requested
++ booked - Booked
++ decision_pending - Decision Pending
++ instructed - Instructed
++ not_selling - Not Selling
++ used_competitor - Used Competitor
++ no_response - No Response
+
+## Term Unit (enum)
++ 0 (number) - Weeks
++ 1 (number) - Months
++ 2 (number) - Years
+
+### Event Confirmations (object)
++ email: true (boolean, required)
++ sms: false (boolean, required)
+
+### Event (object)
++ dtsStart: `2021-02-21 09:00:00` (required) - UTC date/time
++ dtsEnd: `2021-02-21 09:30:00` (required) - UTC date/time
++ description: This is the event description
++ confirmations (Event Confirmations, required)
+
+### Listing Valuation Base (object)
++ userId: 1 (number) - Agent that the listing will be valued by. This attribute must be provided when creating/updating an in-house valuation.
++ event (Event) - This attribute must be provided when creating/updating an in-house valuation.
+
++ thirdPartyContactId (number) - Contact that the listing was valued by. This attribute must be provided when creating a third party valuation.
++ dtsValued: `2021-02-21 09:00:00` - UTC date/time that the listing was valued. This attribute must be provided when creating a third party valuation.
+
++ status (Listing Valuation Status, required)
+
++ valuedPrice (number)
++ recommendedPrice (number)
++ vendorsEstimate (number)
++ notes
+
+### Listing Valuation (Listing Valuation Base)
++ id (number, required)
++ listingId (number, required)
+
+### Listing Viewing Base (object)
++ contactId (number, required) - Contact that the listing will be viewed by.
++ userId: 1 (number, required) - Agent that the listing will be managing the viewing.
++ event (Event, required)
++ isAccompanied (boolean, required) - Will the viewing be accompanied by the vendor or landlord?
++ contactComments - Viewer's comments about the viewing
++ contactFeedback (Listing Viewing Feedback)
++ outcome (Listing Viewing Outcome)
++ userComments - Agent's internal comments about the viewing
++ cancellationReason - Reason why the viewing was cancelled
+
+### Listing Inspection Base (object)
++ userId: 1 (number) - Agent that the listing will be inspected by. This attribute must be provided when creating/updating an in-house inspection.
++ event (Event) - This attribute must be provided when creating/updating an in-house inspection.
++ notifyTenants (boolean)
+
++ thirdPartyContactId (number) - Contact that the listing is inspected by. This attribute must be provided when creating a third-party inspection.
+
++ dtsInspection (required): `2021-02-21 09:00:00` - UTC date/time that the listing is inspected.
+
++ status (Listing Inspection Status, required)
+
++ notes (string)
++ notesVisible (boolean)
++ filesVisible (boolean)
+
+### Listing Inspection (Listing Inspection Base)
++ id (number, required)
++ listingId (number, required)
+
+### Note (Note Base)
++ contactId (number)
++ listingId (number)
++ dtsCreated
++ dtsUpdated
+
+### Note Base (object)
++ content (string, required)
++ isPinned (boolean) - Whether the note is pinned
++ isArchived (boolean) - Whether the note is archived
+
+### Tenancy (object)
++ id (number)
++ listing (Listing)
++ tenants (array[Contact])
++ termCount (number)
++ termUnit (Term Unit)
++ rentCurrency (string)
++ rentAmount (number)
++ rentFrequency (Rent Frequency)
++ rentDueDay (number)
++ dtsStart: `2021-02-21 09:00:00` - UTC date/time of when the tenancy starts
++ dtsEnd: `2021-02-21 09:00:00` - UTC date/time of when the tenancy ends
++ dtsNoticeGiven: `2021-02-21 09:00:00` - UTC date/time of when notice was given
++ dtsEndPlusNotice: `2021-02-21 09:00:00` - UTC date/time of when the tenancy ends factoring in when notice was given
++ holdingDepositAmount (number)
++ holdingDepositReceived (boolean)
++ termsPaidInAdvance (number)
++ fixedTerm (boolean)
++ depositCurrency (string)
++ depositAmount (number)
++ depositHeld (string)
++ depositScheme (Deposit Scheme)
++ depositSchemeReference (string)
++ depositDateReceived: `2021-02-21`
++ dtsDepositReceived: `2021-02-21 12:00:00`
++ notes (string)
++ inventoryList (string)
++ noticePeriod (number)
++ noticePeriodUnit (Term Unit)
++ noticeContact (Contact)
++ fees (array[Fee])
++ active (boolean)
++ provisional (boolean)
++ expired (boolean)
++ rentDue (array[Rent Due])
++ previousTenancyId (number)
++ dtsCreated (string)
++ dtsUpdated (string)
+
+## Fee Type (enum)
++ 0 (number) - Sale Fee
++ 1 (number) - Rent Fee
++ 2 (number) - Rent Collect Fee
++ 3 (number) - Managed Fee
++ 4 (number) - Guaranteed Rent Fee
++ 5 (number) - Marketing Fee
++ 6 (number) - Maintenance Issue Admin Fee
+
+## Fee Amount Type (enum)
++ 0 (number) - Fixed
++ 1 (number) - Percentage
+
+## Fee Frequency (enum)
++ 0 (number) - Ongoing
++ 1 (number) - One-off
+
+### Fee (object)
++ type (Fee Type)
++ amount (number)
++ amountType (Fee Amount Type)
++ frequency (Fee Frequency)
+
+### Rent Due (object)
++ dtsDue: `2021-02-21 09:00:00` - UTC date/time of when rent is due
++ amountDue (number)
++ amountPaid (number)
++ overdue (boolean)
+
+### Tenancy Reference (object)
++ id (number)
++ price (number)
++ rentFrequency (Rent Frequency)
++ passed (boolean)
++ contactResults (array[Tenancy Reference Contact Result])
+
+### Tenancy Reference Contact Result (object)
++ notes (string)
++ passed (boolean)
++ dtsResult: `2021-02-21 09:00:00` - UTC date/time of when rent is due
+
+### Listing Viewing (Listing Viewing Base)
++ id (number, required)
++ listingId (number, required)
++ dtsUpdated: `2021-02-21 09:00:00` - UTC date/time of when viewing was updated
++ updateMd5Hash
+
+
+### Contact Order Base (object)
++ contactId: 123 (number, required)
++ amount: 145.50 (number, required)
++ currency: `GBP` (string, required)
++ reference: `123456abc` (string, required)
++ status: 1 (Contact Order Status, required)
++ dtsCreated: `2021-02-21 09:00:00` (string, required) - UTC date/time of when the order was created
++ dtsUpdated (string)
++ metadata (object)
+
+## Contact Order Status (enum)
++ 0 (number) - Pending
++ 1 (number) - Failed
++ 2 (number) - Paid
++ 3 (number) - Partially Paid
+
+## Listing Fee Type (enum)
++ 0 (number) - Upfront
++ 1 (number) - Split
++ 2 (number) - No Sale/No Fee
+
+### Search Region (Search Region Base)
++ id (number)
+
+### Search Region Base (object)
++ name (string)
++ description (string)
++ main: false (boolean)
++ areaGuideUrl (string)
++ polygon (array[Coordinate])
+
+### Listing Meter Reading (object)
++ id (number)
++ serialNumber (string)
++ type (string)
++ value (number)
++ dtsChecked (string) - UTC date/time of when the meter reading was checked
+
+### Listing Completion (object)
++ id (number)
++ listingId (number)
++ buyers (array[Contact])
++ buyerSolicitor (Contact, optional)
++ vendorSolicitor (Contact, optional)
++ user (User, optional)
++ progressor (User, optional)
++ price (string, optional)
++ fee (string, optional)
++ deposit (string, optional)
++ notes (string, optional)
++ fixturesFittings (string, optional)
++ vendorFeedback (string, optional)
++ vendorFeedbackPublic (boolean)
++ fallenThroughReason (string, optional)
++ dtsFallenThrough (string, optional)
++ dtsAgreed (string, optional)
++ dtsExchanged (string, optional)
++ dtsCompleted (string, optional)
++ dtsMoveIn (string, optional)
++ expectedCompletionDate (string, optional)
++ dtsFeedbackRequested (string, optional)
++ dtsFeedbackReceived (string, optional)
++ chain (Chain, optional)
+
+### Chain (object)
++ id (number)
++ items (array[Chain Item])
+
+### Chain Item (object)
++ id (number)
++ listingCompletionId (number)
++ address (string)
++ internalNotes (string, optional)
++ externalNotes (string, optional)
++ order (number)
++ checks (array[Chain Item Check])
++ vendors (array[Contact])
+
+### Chain Item Check (object)
++ name (string)
++ dateCompleted (string, optional) - 0000-00-00 if no date is given but completed
++ dateDue (string, optional)
+
+### Listing Response Item (Listing)
++ hmoListingCount (number) - Number of HMO listings
++ contacts (array[Contact]) - If includeContacts is 1
++ images (array[File])
++ meterReadings (array[Listing Meter Reading]) - If includeMeterReadings is 1
++ offers (array[Listing Offer]) - If includeOffers is 1
++ 
++ sale (Listing Completion)
+
+### Listing Flags (object)
++ hasElectricity (boolean, optional)
++ hasFibreOptic (boolean, optional)
++ hasGas (boolean, optional)
++ hasSatelliteCableTv (boolean, optional)
++ hasTelephone (boolean, optional)
++ isAuction (boolean, optional)
++ isArticle4Area (boolean, optional)
++ isListed (boolean, optional)
++ hasRestrictions (boolean, optional)
++ hasRequiredAccess (boolean, optional)
++ hasRightsOfWay (boolean, optional)
++ hasFloodedInLastFiveYears (boolean, optional)
++ hasFloodDefenses (boolean, optional)
+
+### Listing Residential Flags (object)
++ hasAccessibilityFeatures (boolean, optional)
++ hasBasement (boolean, optional)
++ hasConservatory (boolean, optional)
++ hasDoubleGlazing (boolean, optional)
++ hasFireplace (boolean, optional)
++ hasGym (boolean, optional)
++ hasLoft (boolean, optional)
++ hasOutbuildings (boolean, optional)
++ hasPorterSecurity (boolean, optional)
++ hasSwimmingPool (boolean, optional)
++ hasTennisCourt (boolean, optional)
++ hasUtilityRoom (boolean, optional)
++ hasWaterfront (boolean, optional)
++ isSharedAccommodation (boolean, optional)
+
+### Listing Sale Flags (object)
++ isChainFree (boolean, optional)
++ isNewHome (boolean, optional)
++ isRepossession (boolean, optional)
++ isRetirement (boolean, optional)
++ hasEquityLoanIncentive (boolean, optional)
++ hasHelpToBuyIncentive (boolean, optional)
++ hasMiNewHomeIncentive (boolean, optional)
++ hasNewBuyIncentive (boolean, optional)
++ hasPartBuyPartRentIncentive (boolean, optional)
++ hasSharedEquityIncentive (boolean, optional)
++ hasSharedOwnershipIncentive (boolean, optional)
++ developmentOpportunity (boolean, optional)
++ investmentOpportunity (boolean, optional)
+
+### Listing Rental Flags (object)
++ petsAllowed (boolean, optional)
++ smokersConsidered (boolean, optional)
++ sharersConsidered (boolean, optional)
++ hasBurglarAlarm (boolean, optional)
++ hasWashingMachine (boolean, optional)
++ hasDishwasher (boolean, optional)
++ allBillsIncluded (boolean, optional)
++ waterBillIncluded (boolean, optional)
++ gasBillIncluded (boolean, optional)
++ electricityBillIncluded (boolean, optional)
++ councilTaxIncluded (boolean, optional)
++ councilTaxExempt (boolean, optional)
++ tvLicenceIncluded (boolean, optional)
++ satelliteCableTvBillIncluded (boolean, optional)
++ internetBillIncluded (boolean, optional)
++ telephoneBillIncluded (boolean, optional)
++ isTenanted (boolean, optional)
++ isServiced (boolean, optional)
++ isStudentProperty (boolean, optional)
+
+### Listing Commercial Flags (object)
++ businessForSale (boolean, optional)
+
+### Document (object)
++ id (number)
++ name (string)
++ listingId (number)
++ contactId (number)
++ dtsCreated
+
+### Document Request (object)
++ contactId (number) - Contact ID to link this document to
++ listingId (number) - Listing ID to link this document to
++ name (string, required)
++ url (string, required)
++ fileType (Contact Document File Type) - Document file type (for contacts only)
+
+### Call Log Base (object)
++ listingId (number)
++ method (Call Log Method)
++ inbound (boolean)
++ dtsCallTaken (string)
++ details (string)
++ pinned (boolean)
+
+### Call Log (Call Log Base)
++ id (number)
+
+### Listing Search Base (object)
++ branchId (number, required)
++ transactionType (Transaction Type, required)
++ requirements (array[Listing Search Requirement])
++ contactIds (array[number], required)
++ searchRegionIds (array[number])
+
+### Listing Search Requirement (object)
++ name (string)
++ value
++ level (Requirement Level)
++ mode (Requirement Mode)
+
+### Listing Search (Listing Search Base)
++ id (number)
++ dtsCreated (string)
++ dtsUpdated (string)
+
+### Task Base (object)
++ listingId (number)
++ contactId (number)
++ assignedTo (number, required)
++ createdBy (number) - Required when creating new task. No effect on updates.
++ priority (number)
++ description (string) - Title. 200 characters maximum.
++ notes (string) - Notes. 64000 characters maximum.
++ dtsStart (string)
++ dtsDue (string)
++ dtsCompleted (string)
+
+### Task (Task Base)
++ id (number)
++ dtsCreated (string)
+
+### Webhook Base (object)
++ brandId (number)
++ branchId (number)
++ url (string, required)
++ name (string, required)
++ description (string, required)
++ events (array[Webhook Event])
++ manual (boolean)
++ visible (boolean) - Determines whether this webhook should be shown in the UI.
++ enabled (boolean)
+
+### Webhook (Webhook Base)
++ id (number)
++ dtsCreated (string)
++ dtsDisabled (string)
+
+### Global Search Result
++ id (number)
++ class (string) - FontAwesome 5 icon class suffix
++ type (Global Search Result Type)
++ path (string)
++ text (string)
++ thumbnailUrl (string)
++ thumbnailClass (string) - Contacts only
++ branchName (string)
++ childItems (array[Global Search Child Item])
++ tags (array[Tag])
+
++ displayName (string) - Contacts only
++ phoneConsent (boolean) - Contacts only
++ preferredContactMethod (ContactMethod) - Contacts only
++ phone (string) - Contacts only
++ mobile (string) - Contacts only
++ workPhone (string) - Contacts only
++ email (string) - Contacts only
++ preferredPhone (string) - Contacts only
++ archived (boolean) - Contacts only
+
+### Global Search Count
++ shown (number)
++ total (number)
++ max (number)
+
+### Global Search Child Item
++ text (string)
++ url (string)
+
+### Tag
++ text (string)
++ class (string)
+
+### Listing Link Base
++ name (string)
++ url (string)
+
+
+### Listing Link (Listing Link Base)
++ id (number)
+
+## Global Search Result Type (enum)
++ `listing` - Listing
++ `contact` - Contact
++ `listing-issue` - Listing Issue
++ `listing-tenancy` - Listing Tenancy
+
+## Coordinate (object)
++ lat - Latitude
++ lng - Longitude
+
+## Requirement Name (enum)
++ min_price - Minimum price
++ max_price - Maximum price
++ min_beds - Minimum bedrooms
++ max_beds - Maximum bedrooms
++ min_baths - Minimum bathrooms
++ min_receptions - Minimum receptions
++ min_ensuites - Minimum ensuites
++ min_toilets - Minimum toilets
++ min_kitchens - Minimum kitchens
++ min_parking_spaces - Minimum parking spaces
++ min_internal_area - Minimum internal area
++ min_external_area - Minimum external_area
++ min_internal_area_unit - Minimum internal area unit (Refer to Listing Area Unit enum)
++ min_external_area_unit - Minimum external area unit (Refer to Listing Area Unit enum)
++ rent_frequency - `Rent frequency Refer to Rent Frequency enum)`
++ move_date_range - Move date range (DD/MM/YYYY - DD/MM/YYYY)
++ condition - `Property condition (Refer to Listing Condition enum)`
++ conditions - `Property conditions (Refer to Listing Condition enum)`
++ property_types = `Property types (Refer to Property Type enum)`
++ features - Property features
+
+## Requirement Level (enum)
++ 0 (number) - Optional (not supported)
++ 1 (number) - Mandatory
+
+## Requirement Mode (enum)
++ `include` - Include
++ `exclude` - Exclude
+
+## Rent Service (enum)
++ 0 (number) - Let Only
++ 1 (number) - Rent Collect
++ 2 (number) - Fully Managed
++ 3 (number) - Guaranteed Rent
+
+## Location Type (enum)
++ village - Village
++ town - Town
++ urban - Urban
++ rural - Rural
++ country - Country
++ seaside_seafront - Seaside/Seafront
++ riverside - Riverside
+
+## Entrance Floor (enum)
++ basement - Basement
++ ground_floor - Ground Floor
++ first_floor - 1st Floor
++ second_floor - 2nd Floor
++ higher_than_second_floor_no_lift - Higher than 2nd floor (no lift)
++ higher_than_second_floor_with_lift - Higher than 2nd floor (with lift)
+
+## Tenancy Type (enum)
++ ast - AST
++ hmo - HMO
++ serviced - Serviced Accommodation
++ shared - Room In Shared
++ non_act - Non-Housing Act
++ prt - Private Residential Tenancy (Scotland)
++ standard - Standard Occupation Contract (Wales)
++ secure - Secure Occupation Contract (Wales)
+
++ sublet_agreement - Sublet Agreement
++ new_commercial_lease - New Commercial Lease
++ full_service_lease - Full Service Lease
++ net_lease - Net Lease
++ short_term_lease - Short-term Lease
+
+## Listing Issue Type (enum)
++ 0 (number) - Applicance
++ 1 (number) - Cleaning
++ 2 (number) - Damage
++ 3 (number) - Electrical
++ 4 (number) - Fire
++ 5 (number) - Heating
++ 6 (number) - Painting
++ 7 (number) - Pest
++ 8 (number) - Plumbing
++ 9 (number) - Structural
++ 10 (number) - Theft
++ 11 (number) - Vandalism
++ 12 (number) - Miscellaneous
++ 13 (number) - Health & Safety
++ 14 (number) - EPC
++ 15 (number) - Gardening
++ 16 (number) - Decorating
++ 17 (number) - Clearance
++ 18 (number) - Windows
++ 19 (number) - Flooring
++ 20 (number) - Gas
+
+## Listing Issue Status (enum)
++ 0 (number) - New
++ 1 (number) - Awaiting Contractor
++ 2 (number) - Awaiting Landlord Consent
++ 3 (number) - Awaiting Tenant Availability
++ 4 (number) - In Progress
++ 5 (number) - Completed
+
+## Listing Issue Source (enum)
++ 0 (number) - Telephone
++ 1 (number) - Email
++ 2 (number) - SMS
++ 3 (number) - Client Portal
++ 4 (number) - Visit
+
+## Listing Issue Billing (enum)
++ 0 (number) - Landlord
++ 1 (number) - Tenant
++ 2 (number) - Agent
+
+## Listing Issue Priority (enum)
++ 1 (number) - Low
++ 2 (number) - Medium
++ 3 (number) - High
+
+## Listing Inspection Status (enum)
++ 0 (number) - Booked
++ 1 (number) - Completed
++ 2 (number) - Cancelled
+
+## Call Log Method (enum)
++ 0 (number) - Phone
++ 1 (number) - SMS
++ 2 (number) - Email
++ 3 (number) - Verbal
++ 4 (number) - Post
++ 5 (number) - WhatsApp
++ 6 (number) - Other
++ 7 (number) - AgentAI
++ 8 (number) - MovePal
+
+## Task Priority (enum)
++ 0 (number) - Highest
++ 1 (number) - High
++ 2 (number) - Normal
++ 3 (number) - Low
++ 5 (number) - Lowest
+
+## Buying Position (enum)
++ 0 (number) - Cash
++ 1 (number) - Mortgage Agreed In Principle
++ 2 (number) - Mortgage Required
++ 3 (number) - Dependent On Sale
++ 4 (number) - Cash On Completion
++ 5 (number) - First Time Buyer
++ 6 (number) - Fund Buyer
+
+## Buying Reason (enum)
++ 0 (number) - Investor
++ 1 (number) - Developer
++ 2 (number) - To Live In
++ 3 (number) - To Rent
++ 4 (number) - Holiday Home
++ 5 (number) - Additional Residence
+
+## Selling Position (enum)
++ 0 (number) - Nothing To Sell
++ 1 (number) - Renting
++ 2 (number) - Selling With Us
++ 3 (number) - Selling With Other
++ 4 (number) - Selling Privately
++ 5 (number) - Agent Not Decided
++ 6 (number) - Dependent On Sale
++ 7 (number) - Selling Out Of Area
++ 8 (number) - LOTS
+
+## Selling Position Status (enum)
++ 0 (number) - Pending
++ 1 (number) - Instructed
++ 2 (number) - On Market
++ 3 (number) - SSTC
++ 4 (number) - Not On Market
++ 5 (number) - Under Offer
++ 6 (number) - Exchanged
++ 7 (number) - Completed
++ 8 (number) - Let To Buy
+
+## Selling Reason (enum)
++ 0 (number) - Debt / Repossession
++ 1 (number) - Death / Inheritance
++ 2 (number) - Divorce
++ 3 (number) - Corporate Instruction
++ 4 (number) - Downsizing
++ 5 (number) - Upsizing
++ 6 (number) - Relocation
++ 7 (number) - Retirement
++ 8 (number) - BTL Landlord Disposal
++ 9 (number) - Flip Resale
++ 10 (number) - Lack of Finance
++ 11 (number) - Other
+
+## Renting Position (enum)
++ 0 (number) - Renting With Us
++ 1 (number) - Renting With Other
++ 2 (number) - Homeowner
++ 3 (number) - In Short Term Accommodation
++ 4 (number) - Emergency Accommodation
++ 5 (number) - Living With Parents
++ 6 (number) - Job Accommodation
++ 7 (number) - Student Halls
++ 8 (number) - Overseas Resident
++ 9 (number) - Living With Family
++ 10 (number) - Living With Friends
+
+## Deposit Scheme (enum)
++ 0 (number) - Deposit Protection Service
++ 1 (number) - My Deposits (TDSL)
++ 2 (number) - Tenancy Deposit Scheme
++ 3 (number) - Landlord
++ 4 (number) - Agency
++ 5 (number) - Letting Protection Service (Scotland)
++ 6 (number) - Safe Deposits (Scotland)
++ 7 (number) - My Deposits (Scotland)
++ 8 (number) - Tenancy Deposit Scheme (Northern Ireland)
++ 9 (number) - My Deposits (Northern Ireland)
++ 10 (number) - Letting Protection Service (Northern Ireland)
++ 11 (number) - Not Received
++ 12 (number) - Reposit
++ 13 (number) - OME Zero Deposit Scheme
++ 14 (number) - Blinc Deposit Replacement Scheme
++ 15 (number) - The Disputes Service
++ 16 (number) - Zero Deposit
++ 17 (number) - Custom (Branch Scheme)
+
+## Webhook Event
++ branch.create
++ branch.update
++ branch.delete
++ contact.create
++ contact.update
++ contact.delete
++ lead.create
++ lead.update
++ lead.delete
++ listing.create
++ listing.update
++ listing.delete
++ listing_offer.create
++ listing_offer.update
++ listing_offer.delete
++ listing_valuation.create
++ listing_valuation.update
++ listing_valuation.delete
++ listing_viewing.create
++ listing_viewing.update
++ listing_viewing.delete
++ listing_completion.create
++ listing_completion.update
++ listing_completion.delete
++ user.create
++ user.update
++ user.delete
++ listing_tenancy.create
++ listing_tenancy.update
++ listing_tenancy.delete
++ listing_issue.create
++ listing_issue.update
++ listing_issue.delete
++ task.create
++ task.update
++ task.delete
+
+## Listing Key Delete Reason
++ 0 (number) - No reason given
++ 1 (number) - Returned to owner
++ 2 (number) - No longer required
++ 3 (number) - Lost
++ 4 (number) - Disposed of
++ 5 (number) - Sale completed
+
+## Contact Document File Type
++ 5 (number) - Document (default)
++ 8 (number) - AML document

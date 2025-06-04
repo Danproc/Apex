@@ -36,6 +36,12 @@ class Apex27 {
 		$this->plugin_dir = __DIR__;
 		$this->plugin_url = plugin_dir_url(__FILE__);
 
+		// Load template helpers
+		require_once $this->plugin_dir . '/includes/template-helpers.php';
+		
+		// Load custom post types
+		require_once $this->plugin_dir . '/includes/custom-post-types.php';
+
 		// Admin
 		if(is_admin()) {
 			add_action("admin_menu", array($this, "create_plugin_settings_page"));
@@ -68,6 +74,12 @@ class Apex27 {
 	public function add_scripts() {
 		wp_enqueue_script("apex27", sprintf( "%sassets/js/apex27.js?build=%d", $this->plugin_url, self::BUILD ), array("jquery"));
 		wp_enqueue_script("fslightbox", sprintf( "%sassets/js/fslightbox.js?build=%d", $this->plugin_url, self::BUILD ) );
+
+		// Localize script with plugin data
+		wp_localize_script("apex27", "apex27_data", array(
+			"plugin_url" => $this->plugin_url,
+			"ajax_url" => admin_url("admin-ajax.php")
+		));
 
 		wp_enqueue_style("apex27-style", sprintf("%sassets/css/style.css?build=%d", $this->plugin_url, self::BUILD ) );
 		wp_enqueue_style("font-awesome-style", "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css");
@@ -142,7 +154,11 @@ class Apex27 {
 		add_rewrite_rule("^$this->property_search_slug/?$", 'index.php?apex27_page_name=property-search', 'top');
 		add_rewrite_rule('^property-details/(sales|lettings|new-homes|land|commercial-sales|commercial-lettings)/[^/]+/([0-9]+)/?$', 'index.php?apex27_page_name=property-details&listing_id=$matches[2]', 'top');
 
-		flush_rewrite_rules();
+		// Only flush rewrite rules if they haven't been set yet
+		if (!get_option('apex27_rewrite_rules_flushed')) {
+			flush_rewrite_rules();
+			update_option('apex27_rewrite_rules_flushed', true);
+		}
 	}
 
 	private function get_plugin_vars() {
@@ -210,6 +226,11 @@ class Apex27 {
 		add_options_page("Apex27", "Apex27", "manage_options", "apex27", array($this, "settings_page_content"));
 	}
 
+	/**
+	 * Check if plugin is properly configured with API credentials
+	 * 
+	 * @return bool True if configured, false otherwise
+	 */
 	public function is_configured() {
 		$website_url = get_option(self::KEY_APEX27_WEBSITE_URL);
 		$api_key = get_option(self::KEY_APEX27_API_KEY);
@@ -305,6 +326,8 @@ class Apex27 {
 
 		</div>
 		<?php
+		// Show CRM sync status for custom post types
+		$this->show_crm_sync_status();
 	}
 
 	public function setup_sections() {
@@ -442,48 +465,78 @@ class Apex27 {
 		return preg_replace("/[-]+/", "-", $address);
 	}
 
-	private function api_call($endpoint, $data = array()) {
-
+	/**
+	 * Make API call to Apex27 service with proper error handling
+	 * 
+	 * @param string $endpoint API endpoint to call
+	 * @param array $data Data to send with the request
+	 * @return string|false Response body or false on error
+	 */
+	public function api_call($endpoint, $data = array()) {
 		$api_url_format = "%s/api/%s";
 
 		$website_url = get_option(self::KEY_APEX27_WEBSITE_URL);
 		if(!$website_url) {
+			error_log('Apex27: Website URL not configured');
 			return false;
 		}
 
 		$api_key = get_option(self::KEY_APEX27_API_KEY);
 		if(!$api_key) {
+			error_log('Apex27: API key not configured');
 			return false;
 		}
 
 		$data["api_key"] = $api_key;
-
 		$query = http_build_query($data);
-
 		$api_endpoint_url = sprintf($api_url_format, $website_url, $endpoint);
 
 		$handle = curl_init($api_endpoint_url);
+		if (!$handle) {
+			error_log('Apex27: Failed to initialize cURL');
+			return false;
+		}
 
 		curl_setopt($handle, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($handle, CURLOPT_POST, true);
 		curl_setopt($handle, CURLOPT_POSTFIELDS, $query);
+		curl_setopt($handle, CURLOPT_TIMEOUT, 30);
+		curl_setopt($handle, CURLOPT_CONNECTTIMEOUT, 10);
 
 		$response = curl_exec($handle);
-
+		$http_code = curl_getinfo($handle, CURLINFO_HTTP_CODE);
 		$error = curl_error($handle);
+		curl_close($handle);
+
 		if($error) {
+			error_log('Apex27: cURL error - ' . $error);
+			return false;
+		}
+
+		if ($http_code !== 200) {
+			error_log('Apex27: HTTP error - ' . $http_code);
 			return false;
 		}
 
 		return $response;
 	}
 
+	/**
+	 * Test API connection
+	 * 
+	 * @return object|null Ping response or null on failure
+	 */
 	public function ping() {
 		$response = $this->api_call("ping");
 		return json_decode($response);
 	}
 
+	/**
+	 * Get portal configuration options from API
+	 * 
+	 * @return object|false Portal options or false on failure
+	 */
 	public function get_portal_options() {
 
 		if($this->portal_options) {
@@ -500,11 +553,21 @@ class Apex27 {
 		return $options;
 	}
 
+	/**
+	 * Get search configuration options from API
+	 * 
+	 * @return object|null Search options or null on failure
+	 */
 	public function get_search_options() {
 		$response = $this->api_call("get-search-options");
 		return json_decode($response);
 	}
 
+	/**
+	 * Get property search results based on current query parameters
+	 * 
+	 * @return object|null Search results or null on failure
+	 */
 	public function get_search_results() {
 		$portal_options = $this->get_portal_options();
 		$search_options = $this->get_search_options();
@@ -528,9 +591,19 @@ class Apex27 {
 			"page" => get_query_var("page"),
 			"locale" => get_locale()
 		]);
-		return json_decode($response);
+		$result = json_decode($response);
+		
+		// Hook for custom post types to populate from search results
+		$result = apply_filters('apex27_search_results', $result);
+		
+		return $result;
 	}
 
+	/**
+	 * Get detailed property information by listing ID
+	 * 
+	 * @return object|null Property details or null on failure
+	 */
 	public function get_property_details() {
 		$listing_id = get_query_var("listing_id");
 
@@ -538,20 +611,47 @@ class Apex27 {
 			"id" => $listing_id,
 			"locale" => get_locale()
 		]);
-		return json_decode($response);
+		$result = json_decode($response);
+		
+		// Hook for custom post types to populate from property details
+		$result = apply_filters('apex27_property_details', $result);
+		
+		return $result;
 	}
 
+	/**
+	 * Handle contact form submission with proper sanitization
+	 */
 	public function handle_contact_form() {
+		// Verify nonce for security
+		if (!wp_verify_nonce($_POST['apex27_nonce'] ?? '', 'apex27_contact_form')) {
+			wp_send_json_error((object) [
+				"message" => "Security verification failed. Please refresh the page and try again."
+			]);
+			return;
+		}
+
 		$fields = $this->get_contact_vars();
 		$post_data = [];
 
 		if($this->is_recaptcha_enabled()) {
-			$post_data["ip"] = $_SERVER["REMOTE_ADDR"];
+			$post_data["ip"] = sanitize_text_field($_SERVER["REMOTE_ADDR"] ?? '');
 			$post_data["recaptcha_site_key"] = $this->get_recaptcha_site_key();
 		}
 
+		// Sanitize all POST data
 		foreach($fields as $field) {
-			$post_data[$field] = isset($_POST[$field]) ? $_POST[$field] : "";
+			if (isset($_POST[$field])) {
+				if ($field === 'email') {
+					$post_data[$field] = sanitize_email($_POST[$field]);
+				} elseif ($field === 'message') {
+					$post_data[$field] = sanitize_textarea_field($_POST[$field]);
+				} else {
+					$post_data[$field] = sanitize_text_field($_POST[$field]);
+				}
+			} else {
+				$post_data[$field] = "";
+			}
 		}
 
 		$response = $this->api_call("contact", $post_data);
@@ -671,7 +771,129 @@ class Apex27 {
 
 	}
 
+	/**
+	 * Plugin activation callback
+	 */
+	public static function activate() {
+		// Force rewrite rules to be flushed on activation
+		delete_option('apex27_rewrite_rules_flushed');
+		
+		// Set default options
+		if (!get_option(self::KEY_APEX27_SHOW_OVERSEAS_DROPDOWN)) {
+			update_option(self::KEY_APEX27_SHOW_OVERSEAS_DROPDOWN, '1');
+		}
+		if (!get_option(self::KEY_APEX27_ENABLE_RECAPTCHA)) {
+			update_option(self::KEY_APEX27_ENABLE_RECAPTCHA, '1');
+		}
+	}
+
+	/**
+	 * Plugin deactivation callback
+	 */
+	public static function deactivate() {
+		// Clean up rewrite rules
+		flush_rewrite_rules();
+		delete_option('apex27_rewrite_rules_flushed');
+	}
+
+	/**
+	 * Show CRM sync status on settings page
+	 */
+	public function show_crm_sync_status() {
+		if (!$this->is_configured()) {
+			return;
+		}
+
+		$property_count = wp_count_posts('apex27_property')->publish ?? 0;
+		$agent_count = wp_count_posts('apex27_agent')->publish ?? 0;
+		$last_sync = get_option('apex27_last_sync_time');
+		$text_domain = "apex27";
+		
+		?>
+		<div style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-left: 4px solid #00a0d2;">
+			<h3><?php _e('CRM Data Sync Status', 'apex27'); ?></h3>
+			<p><strong><?php _e('Properties in WordPress:', 'apex27'); ?></strong> <?php echo $property_count; ?></p>
+			<p><strong><?php _e('Agents in WordPress:', 'apex27'); ?></strong> <?php echo $agent_count; ?></p>
+			<?php if ($last_sync): ?>
+				<p><strong><?php _e('Last Sync:', 'apex27'); ?></strong> 
+				   <?php echo human_time_diff(strtotime($last_sync), current_time('timestamp')) . ' ' . __('ago', 'apex27'); ?>
+				</p>
+			<?php endif; ?>
+			
+			<p>
+				<button type="button" class="button button-secondary" onclick="apex27ManualSync('properties')">
+					<?php _e('Sync Properties Now', 'apex27'); ?>
+				</button>
+				<button type="button" class="button button-secondary" onclick="apex27ManualSync('agents')" style="margin-left: 10px;">
+					<?php _e('Sync Agents Now', 'apex27'); ?>
+				</button>
+			</p>
+			
+			<p><em><?php _e('Note: Data automatically syncs hourly. Properties and agents are accessible to page builders as custom post types.', 'apex27'); ?></em></p>
+		</div>
+		
+		<script>
+		function apex27ManualSync(type) {
+			const button = event.target;
+			const originalText = button.textContent;
+			button.textContent = '<?php _e('Syncing...', 'apex27'); ?>';
+			button.disabled = true;
+			
+			fetch(ajaxurl, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				body: 'action=apex27_sync_' + type + '&nonce=' + '<?php echo wp_create_nonce('apex27_sync_nonce'); ?>'
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					console.log('Apex27 Sync Result:', data);
+					button.textContent = '<?php _e('Sync Complete!', 'apex27'); ?>';
+					let message = data.message || '';
+					if (data.errors && data.errors.length > 0) {
+						message += '\n\nErrors encountered:\n' + data.errors.join('\n');
+					}
+					if (message) {
+						alert(message);
+					}
+					setTimeout(() => {
+						button.textContent = originalText;
+						button.disabled = false;
+						location.reload();
+					}, 2000);
+				} else {
+					console.error('Apex27 Sync Error:', data);
+					button.textContent = '<?php _e('Sync Failed', 'apex27'); ?>';
+					if (data.message) {
+						alert('Sync failed: ' + data.message);
+					}
+					setTimeout(() => {
+						button.textContent = originalText;
+						button.disabled = false;
+					}, 2000);
+				}
+			})
+			.catch(error => {
+				button.textContent = '<?php _e('Error', 'apex27'); ?>';
+				setTimeout(() => {
+					button.textContent = originalText;
+					button.disabled = false;
+				}, 2000);
+			});
+		}
+		</script>
+		<?php
+	}
+
 }
+
+// Plugin activation hook
+register_activation_hook(__FILE__, array('Apex27', 'activate'));
+
+// Plugin deactivation hook
+register_deactivation_hook(__FILE__, array('Apex27', 'deactivate'));
 
 $apex27 = new Apex27();
 

@@ -93,7 +93,6 @@ class Apex27 {
 		this.recaptchaSiteKey = this.contactForm.dataset.recaptchaSiteKey;
 		this.recaptchaTokenField = document.getElementById("apex27-recaptcha-token");
 
-		console.log(this.recaptchaSiteKey, this.recaptchaTokenField);
 
 		if(this.contactForm) {
 			this.contactForm.addEventListener("submit", event => {
@@ -351,7 +350,7 @@ class Apex27 {
 						position: listing.geolocation
 					});
 
-					let imageUrl = "/wp-content/plugins/apex27/assets/img/property.png";
+					let imageUrl = apex27_data.plugin_url + "assets/img/property.png";
 					if(listing.image !== null) {
 						imageUrl = listing.image;
 					}

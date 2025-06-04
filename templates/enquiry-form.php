@@ -59,6 +59,7 @@ else {
 </p>
 
 <form id="apex27-contact-form" method="post" action="<?=htmlspecialchars($contact_url)?>" class="mb-5" data-recaptcha-site-key="<?=htmlspecialchars($recaptcha_site_key)?>">
+	<?php wp_nonce_field('apex27_contact_form', 'apex27_nonce'); ?>
 
 	<?php
 	if(isset($listing_id)) {
@@ -142,7 +143,7 @@ else {
 		<label for="apex27-request-valuation"><?=htmlspecialchars(__("I want a valuation", $text_domain))?></label>
 	</div>
 
-	<?Php
+	<?php
 	if($apex27->is_recaptcha_enabled()) {
 		?>
 		<input type="hidden" name="token" id="apex27-recaptcha-token" value="" />
